@@ -36,5 +36,39 @@ def r_album(request):
     # Convert dictionary to JSON response
     return JsonResponse(response, safe=False)
 
+def c_album(request):
+    return None
 
-# Create your views here.
+def d_album(request):
+    return None
+
+def u_album(request):
+    return None
+
+def r_song(request):
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    supabase = create_client(url, key)
+    test = supabase.table("song").select("*").execute()
+    response = test.data
+    # Convert dictionary to JSON response
+    return JsonResponse(response, safe=False)
+
+def r_song2(request, id_album):
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    supabase = create_client(url, key)
+    test = supabase.table("song").select("*").eq('id_album', id_album).execute()
+    response = test.data
+    # Convert dictionary to JSON response
+    return JsonResponse(response, safe=False)
+
+def r_royalti(request):
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    supabase = create_client(url, key)
+    test = supabase.table("royalti").select("*").execute()
+    response = test.data
+    # Convert dictionary to JSON response
+    return JsonResponse(response, safe=False)
+
