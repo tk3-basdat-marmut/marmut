@@ -6,4 +6,5 @@ requests
 urllib3
 django-environ
 psycopg2-binary
-supabase python-dotenv
+supabase
+python-dotenv
