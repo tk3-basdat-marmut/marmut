@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+
+{% block meta %}
+    <title>Marmut - Login</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    h1{
+        color: #000000;
+    }
+    
+    p {
+        color: #000000;
+    }
+    
+    .card {
+        background-color: #F0FFFF;
+    }
+    
+    .fincache-login-description {
+        color: #F0FFFF;
+    }
+    
+    .fincache-login-description h1 {
+        font-size: 36px;
+    }
+    
+    .fincache-login-description p {
+        font-size: 20px;
+    }
+    
+    .text-register a {
+        text-decoration: none;
+        color: #007bff;
+    }
+    
+    .text-register a:hover {
+        text-decoration: none;
+        color: #15A3C7;
+    }
+    
+    .card {
+        background-color: #F0FFFF;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+        background-color: #d6f3fb;
+    }
+</style>
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row">
+        <div class="col-md-6"> 
+            <div class="fincache-login-description">
+                <h1>Marmut</h1>
+                <p>Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut Marmut </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" placeholder="Username" class="form-control">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" placeholder="Password" class="form-control">
+                        </div>
+
+                        <div class="text-center mt-3 mb-3">
+                            <input class="btn btn-primary px-4 py-2" type="submit" value="Login">
+                        </div>
+                    </form>
+
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    <p class="text-register">Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
