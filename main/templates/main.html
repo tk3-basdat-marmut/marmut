@@ -13,5 +13,11 @@
             Logout
         </button>
     </a>
+
+    <a href="{% url 'album_song_royalti:dashboard' %}">
+        <button>
+            Kelola Album
+        </button>
+    </a>
     <h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

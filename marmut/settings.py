@@ -39,6 +39,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "main",
     "LanggananPaket",
+    'album_song_royalti',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
