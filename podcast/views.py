@@ -44,3 +44,9 @@ def r_chart(request):
     response = test.data
     # Convert dictionary to JSON response
     return JsonResponse(response, safe=False)
+
+def rd_episode(request):
+    return render(request, "episode_list.html")
+
+def c_podcast(request):
+    return render(request, "create_podcast.html")

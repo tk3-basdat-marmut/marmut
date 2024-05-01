@@ -87,71 +87,34 @@
     </nav>
 </div>
 
-<div class="modal fade" id="tambahEpisodeModal" tabindex="-1" aria-labelledby="tambahEpisodeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="tambahEpisodeModalLabel">Podcast: Podcast1</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="judul" class="form-label">Judul</label>
-                        <input type="text" class="form-control" id="judul" placeholder="Masukkan judul episode">
-                    </div>
-                    <div class="mb-3">
-                        <label for="judul" class="form-label">Deskripsi</label>
-                        <input type="text" class="form-control" id="deskripsi" placeholder="Masukkan deskripsi episode">
-                    </div>
-                    <div class="mb-3">
-                        <label for="durasi" class="form-label">Durasi</label>
-                        <input type="text" class="form-control" id="durasi" placeholder="Masukkan durasi episode">
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="background-color: #15a3c7; color:white">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row justify-content-center mb-3">
-    <div class="col-auto">
-        <button class="btn btn-primary" id="button-album" style="background-color: #15a3c7; color:white">List Podcast</button>
-        <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a>
-    </div>
-</div>
-
-
 <div class="container" style="margin-top: 20px;">
-    <h2 style="font-weight: bold;">LIST PODCAST</h2>
+    <h2 style="font-weight: bold;">DAFTAR EPISODE PADA PODCAST1</h2>
     <div class="row mb-3">
         <div class="col">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-info">
                     <tr class="table-header">
-                        <th style="background-color: #15a3c7; color: white;">Judul</th>
-                        <th style="background-color: #15a3c7; color: white;">Jumlah Episode</th>
-                        <th style="background-color: #15a3c7; color: white;">Total Durasi</th>
+                        <th style="background-color: #15a3c7; color: white;">Judul Episode</th>
+                        <th style="background-color: #15a3c7; color: white;">Deskripsi</th>
+                        <th style="background-color: #15a3c7; color: white;">Durasi</th>
+                        <th style="background-color: #15a3c7; color: white;">Tanggal</th>
                         <th style="background-color: #15a3c7; color: white;">Action</th>
                     </tr>
                     <tr>
-                        <td style="background-color: white;">Podcast1</td>
-                        <td style="background-color: white;"">0</td>
-                        <td style="background-color: white;">0 menit</td>
+                        <td style="background-color: white;">SubJudul1</td>
+                        <td style="background-color: white;"">Lorem Ipsum ...</td>
+                        <td style="background-color: white;">59 menit</td>
+                        <td style="background-color: white;">18/03/2024</td>
                         <td style="background-color: white;">
-                            <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Lihat Daftar Episode</a>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahEpisodeModal" style="background-color: #15a3c7; color:white">Tambah Episode</button>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#hapusEpisodeModal" style="background-color: #15a3c7; color:white">Hapus</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="background-color: white;">Podcast2</td>
-                        <td style="background-color: white;">2</td>
-                        <td style="background-color: white;">4 menit</td>
+                        <td style="background-color: white;">SubJudul2</td>
+                        <td style="background-color: white;"">Lorem Ipsum ...</td>
+                        <td style="background-color: white;">1 jam 2 menit</td>
+                        <td style="background-color: white;">25/03/2024</td>
                         <td style="background-color: white;">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#lihatEpisodeModal" style="background-color: #15a3c7; color:white">Lihat Daftar Episode</button>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahEpisodeModal" style="background-color: #15a3c7; color:white">Tambah Episode</button>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#hapusEpisodeModal" style="background-color: #15a3c7; color:white">Hapus</button>
                         </td>
                     </tr>
