@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Search</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+
+    #searchForm {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+        width: 80%;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    button {
+        background-color: #15A3C7;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0087a8;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #15A3C7;
+        color: white;
+    }
+
+    td {
+        background-color: #fff;
+    }
+</style>
+</head>
+<body>
+<div>
+    <form id="searchForm">
+        <input type="text" id="query" name="query" placeholder="Search...">
+        <button type="button" onclick="performSearch()">CARI</button>
+    </form>
+</div>
+<div id="results"></div>
+
+<script>
+    // Mock data to simulate search results
+    const database = [
+        { type: 'SONG', title: 'Love is in the air', by: 'Artist1' },
+        { type: 'SONG', title: 'What is love', by: 'Artist2' },
+        { type: 'PODCAST', title: 'Love is Blind Pod', by: 'Podcaster1' },
+        { type: 'USER PLAYLIST', title: '90s Love Songs', by: 'User1' }
+    ];
+
+    function performSearch() {
+        const query = document.getElementById('query').value.toLowerCase();
+        const results = database.filter(item => item.title.toLowerCase().includes(query));
+        displayResults(results);
+    }
+
+    function displayResults(results) {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = ''; // Clear previous results
+
+        if (results.length > 0) {
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <tr>
+                    <th>Type</th>
+                    <th>Title</th>
+                    <th>By</th>
+                    <th>Actions</th>
+                </tr>
+            `;
+            results.forEach(result => {
+                const row = table.insertRow(-1);
+                row.insertCell(0).textContent = result.type;
+                row.insertCell(1).textContent = result.title;
+                row.insertCell(2).textContent = result.by;
+                const actionCell = row.insertCell(3);
+                const viewButton = document.createElement('button');
+                viewButton.textContent = 'Lihat';
+                viewButton.onclick = () => alert('Navigating to details of ' + result.title);
+                actionCell.appendChild(viewButton);
+            });
+            resultsDiv.appendChild(table);
+        } else {
+            resultsDiv.textContent = 'Maaf, pencarian untuk "' + query + '" tidak ditemukan';
+        }
+    }
+</script>
+</body>
+</html>
