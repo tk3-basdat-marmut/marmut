@@ -5,17 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription Packages</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        h1 { text-align: center; color: #333; }
-        table { width: 80%; margin: 0 auto; border-collapse: collapse; }
-        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #ddd; }
-        th { background-color: #f2f2f2; }
-        a { text-decoration: none; color: white; background-color: #4CAF50; padding: 8px 16px; border-radius: 5px; }
-        a:hover { background-color: #45a049; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6f3fb;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background: #F0FFFF; /* Light cyan background */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #15A3C7;
+            color: white;
+        }
+        td {
+            background-color: #fff;
+        }
+        a {
+            color: white;
+            background-color: #15A3C7;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #0087a8;
+        }
     </style>
 </head>
 <body>
-    <h1>LANGGANAN PAKET</h1>
+<div class="container">
+    <h2>LANGGANAN PAKET</h2>
     <table>
         <thead>
             <tr>
@@ -24,28 +69,33 @@
                 <th>Action</th>
             </tr>
         </thead>
+
         <tbody>
             <tr>
                 <td>1 Bulan</td>
                 <td>Rp54,900</td>
-                <td><a href="payment.html">Berlangganan</a></td>
+                <td><a href="payment.html?jenis=1%20Bulan&harga=Rp54,900">Berlangganan</a></td>
             </tr>
             <tr>
                 <td>3 Bulan</td>
                 <td>Rp150,000</td>
-                <td><a href="payment.html">Berlangganan</a></td>
+                <td><a href="payment.html?jenis=3%20Bulan&harga=Rp150,000">Berlangganan</a></td>
             </tr>
             <tr>
                 <td>6 Bulan</td>
                 <td>Rp280,000</td>
-                <td><a href="payment.html">Berlangganan</a></td>
+                <td><a href="payment.html?jenis=6%20Bulan&harga=Rp280,000">Berlangganan</a></td>
             </tr>
             <tr>
                 <td>1 Tahun</td>
                 <td>Rp520,000</td>
-                <td><a href="payment.html">Berlangganan</a></td>
+                <td><a href="payment.html?jenis=1%20Tahun&harga=Rp520,000">Berlangganan</a></td>
             </tr>
-        </tbody>
+        </tbody>        
+
+
+
     </table>
+</div>
 </body>
 </html>

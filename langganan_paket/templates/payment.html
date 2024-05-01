@@ -5,26 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment for Subscription</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        h1, label { text-align: center; display: block; color: #333; }
-        form { width: 300px; margin: 20px auto; }
-        select, button { width: 100%; padding: 10px; margin-top: 10px; }
-        button { background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #45a049; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6f3fb;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Full height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #F0FFFF; /* Light cyan background */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
+            width: 60%; /* Adjust width */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #15A3C7;
+            color: white;
+            text-align: left;
+        }
+        td {
+            background-color: #fff;
+            text-align: left;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #15A3C7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0087a8;
+        }
     </style>
 </head>
 <body>
-    <h1>PEMBAYARAN PAKET</h1>
-    <form action="submit_payment.html" method="post">
-        <div>
-            <label for="payment-method">Metode Pembayaran:</label>
-            <select id="payment-method" name="payment-method">
-                <option value="bank_transfer">Transfer Bank</option>
-                <option value="credit_card">Kartu Kredit</option>
-                <option value="e_wallet">E-Wallet</option>
-            </select>
-        </div>
-        <button type="submit">SUBMIT</button>
-    </form>
+<div class="container">
+    <h2 style="text-align: center;">PEMBAYARAN PAKET</h2>
+    <table>
+        <tr>
+            <th>Jenis</th>
+            <td><span id="package-type"></span></td>
+        </tr>
+        <tr>
+            <th>Harga</th>
+            <td><span id="package-price"></span></td>
+        </tr>
+        <tr>
+            <th>Metode Pembayaran</th>
+            <td>
+
+                <form action="history.html" method="get"> <!-- Change action to history.html and method to get -->
+                    <input type="hidden" id="hidden-type" name="jenis" value="">
+                    <input type="hidden" id="hidden-price" name="harga" value="">
+                    <select id="payment-method" name="payment-method">
+                        <option value="bank_transfer">Transfer Bank</option>
+                        <option value="credit_card">Kartu Kredit</option>
+                        <option value="e_wallet">E-Wallet</option>
+                    </select>
+                    <button type="submit">SUBMIT</button>
+                </form>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<script>
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('jenis');
+        const price = urlParams.get('harga');
+    
+        document.getElementById('package-type').textContent = type || '1 Bulan';
+        document.getElementById('package-price').textContent = price || 'Rp54,900';
+        document.getElementById('hidden-type').value = type || '1 Bulan'; // Set value of hidden input
+        document.getElementById('hidden-price').value = price || 'Rp54,900'; // Set value of hidden input
+    };
+</script>
+    
+
 </body>
 </html>

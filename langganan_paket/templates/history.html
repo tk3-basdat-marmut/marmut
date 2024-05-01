@@ -5,17 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        h1 { text-align: center; color: #333; }
-        table { width: 90%; margin: 20px auto; border-collapse: collapse; }
-        th, td { padding: 10px; border-bottom: 1px solid #ddd; }
-        th { background-color: #f2f2f2; }
-        button { margin: 20px auto; display: block; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #45a049; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6f3fb;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background: #F0FFFF; /* Light cyan background */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #15A3C7;
+            color: white;
+        }
+        td {
+            background-color: #fff;
+        }
+        button {
+            color: white;
+            background-color: #15A3C7;
+            padding: 10px 20px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0087a8;
+        }
     </style>
 </head>
 <body>
-    <h1>RIWAYAT TRANSAKSI PAKET</h1>
+<div class="container">
+    <h2>RIWAYAT TRANSAKSI PAKET</h2>
     <table>
         <thead>
             <tr>
@@ -31,5 +73,24 @@
         </tbody>
     </table>
     <button onclick="window.history.back();">Kembali</button>
+</div>
+<script>
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('jenis');
+        const price = urlParams.get('harga');
+        const paymentMethod = urlParams.get('payment-method');
+    
+        const tbody = document.querySelector('tbody');
+        const newRow = `<tr>
+            <td>${type}</td>
+            <td>Today's Date</td> <!-- Adjust as needed -->
+            <td>End Date Calculation</td> <!-- Adjust as needed -->
+            <td>${paymentMethod}</td>
+            <td>${price}</td>
+        </tr>`;
+        tbody.innerHTML = newRow;
+    };
+</script>
 </body>
 </html>
