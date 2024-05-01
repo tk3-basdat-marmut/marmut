@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment for Subscription</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1, label { text-align: center; display: block; color: #333; }
+        form { width: 300px; margin: 20px auto; }
+        select, button { width: 100%; padding: 10px; margin-top: 10px; }
+        button { background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>PEMBAYARAN PAKET</h1>
+    <form action="submit_payment.html" method="post">
+        <div>
+            <label for="payment-method">Metode Pembayaran:</label>
+            <select id="payment-method" name="payment-method">
+                <option value="bank_transfer">Transfer Bank</option>
+                <option value="credit_card">Kartu Kredit</option>
+                <option value="e_wallet">E-Wallet</option>
+            </select>
+        </div>
+        <button type="submit">SUBMIT</button>
+    </form>
+</body>
+</html>
