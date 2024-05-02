@@ -133,6 +133,7 @@
                 <button class="btn btn-primary" id="button-song">Lihat Lagu</button>
                 <button class="btn btn-primary" id="button-royalti">Lihat Royalti</button>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3">Tambah Konten</button>
+                <button class="btn btn-primary" id="button-tambah-album">Tambah Album</button>
             </div>
         </div>
         <div class="row mb-3">
@@ -291,10 +292,12 @@
 
 
         async function displayAlbum() {
-            document.getElementById("album_table").innerHTML = ""
-            const albums = await getAlbums()
-            let htmlString = ``
-            htmlString += `\n<tr>
+            document.getElementById("album_table").innerHTML = "";
+            const albums = await getAlbums();
+            let htmlString = `<tr>
+                                <th colspan="6" style="text-align:center;">LIST ALBUM</th>
+                            </tr>
+                            <tr>
                                 <th>ID</th>
                                 <th>Judul</th>
                                 <th>Jumlah Lagu</th>
@@ -302,27 +305,35 @@
                                 <th>Total Durasi</th>
                                 <th>Action</th>
                             </tr>`;
+
             albums.forEach((item) => {
-                htmlString += `\n<tr>
-                <td>${item.id}</td>
-                <td>${item.judul}</td>
-                <td>${item.jumlah_lagu}</td>
-                <td>${item.id_label}</td>
-                <td>${item.total_durasi}</td>
-                <td>
-                    <button class="action-button lihat-lagu-modal" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Lagu</button>
-                    <button class="action-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Tambah Lagu</button>
-                </td>
-            </tr>`;
-            })
-            document.getElementById("album_table").innerHTML = htmlString
+                htmlString += `<tr>
+                                <td>${item.id}</td>
+                                <td>${item.judul}</td>
+                                <td>${item.jumlah_lagu}</td>
+                                <td>${item.id_label}</td>
+                                <td>${item.total_durasi}</td>
+                                <td>
+                                    <button class="action-button lihat-lagu-modal" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Lagu</button>
+                                    <button class="action-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Tambah Lagu</button>
+                                    <button class="action-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Hapus Album</button>
+                                </td>
+                            </tr>`;
+            });
+
+            document.getElementById("album_table").innerHTML = htmlString;
+
         }
 
         async function displayLagu() {
             document.getElementById("album_table").innerHTML = ""
             const albums = await getSongs()
             let htmlString = ``
-            htmlString += `\n<tr>
+            htmlString += `\n
+                            <tr>
+                                <th colspan="6" style="text-align:center;">LIST LAGU</th>
+                            </tr>
+                            <tr>
                                 <th>ID Album</th>
                                 <th>ID Artist</th>
                                 <th>ID Konten</th>
@@ -345,7 +356,11 @@
             document.getElementById("album_table").innerHTML = ""
             const albums = await getRoyalti()
             let htmlString = ``
-            htmlString += `\n<tr>
+            htmlString += `\n
+                            <tr>
+                                <th colspan="6" style="text-align:center;">LIST ROYALTI</th>
+                            </tr>
+                            <tr>
                                 <th>ID Pemilik Hak Cipta</th>
                                 <th>ID Song</th>
                                 <th>Jumlah</th>
