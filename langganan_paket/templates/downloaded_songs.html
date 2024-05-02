@@ -20,6 +20,22 @@
         margin-bottom: 20px;
     }
 
+    .navbar {
+        background-color: #d6f3fb; 
+        border-radius: 20px;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
+
+    .navbar-brand, .nav-link {
+        color: #15A3C7;
+        font-weight: bold;
+    }
+
+    .nav-link:hover {
+        color: #0087a8;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -67,6 +83,18 @@
 </style>
 </head>
 <body>
+
+<div class="container">
+    <nav class="navbar">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="navbar-brand"><strong>Marmut</strong></a>
+            <div>
+                <a class="nav-link" href="#" style="margin-right: 10px;">Logout</a>
+                <span class="nav-link disabled" aria-disabled="true">Welcome, User</span>
+            </div>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
     <h2>DAFTAR LAGU</h2>
