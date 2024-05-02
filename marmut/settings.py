@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "main",
     'album_song_royalti',
     'podcast',
+    'chart',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

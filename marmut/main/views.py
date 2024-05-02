@@ -13,8 +13,13 @@ from django.core import serializers
 @login_required(login_url='/login')
 def show_main(request):
     context = {
-        'name': '.....',
-        'class': '....',
+        'Nama': '.....',
+        'Email': '....',
+        'Kota Asal':'...',
+        'Gender':'...',
+        'Tempat Lahir':'...',
+        'Tanggal Lahir':'...',
+        'Role':'...',
         'last_login': request.COOKIES['last_login'],
     }
 

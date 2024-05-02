@@ -21,5 +21,6 @@ urlpatterns = [
     path('', include('main.urls')),
     path('album_song_royalti/', include('album_song_royalti.urls')),
     path('admin/', admin.site.urls),
-    path('podcast/', include('podcast.urls'))
+    path('podcast/', include('podcast.urls')),
+    path('chart/', include('chart.urls'))
 ]
