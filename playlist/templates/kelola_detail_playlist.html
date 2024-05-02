@@ -1,35 +1,103 @@
 {% extends 'base.html' %} {% block content %}
+<style>
+  ul {
+    list-style: none;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #d6f3fb;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+
+  .container {
+    background: #f0ffff;
+    /* Light cyan background */
+    padding: 20px;
+    border-radius: 5px;
+    /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle box shadow */
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    background-color: white;
+  }
+
+  .table-header {
+    background-color: #15a3c7;
+    color: white;
+  }
+
+  td {
+    background-color: #fff;
+  }
+
+  a {
+    color: white;
+    background-color: #15a3c7;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  a:hover {
+    background-color: #0087a8;
+  }
+</style>
 
 <div class="container" style="max-width: 95%; margin-bottom: 20px">
   <nav
     class="navbar navbar-expand-lg"
     style="background-color: #d6f3fb; border-radius: 20px"
   >
-    <div class="container-fluid">
-      <a class="navbar-brand" style="color: #15aad3"><strong>Marmut</strong></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="{% url 'main:logout' %}"
-              style="color: #000000"
-              >Logout</a
-            >
-          </li>
-        </ul>
-        <a class="nav-link disabled" aria-disabled="true" style="color: #000000"
+    <div class="container-fluid" style="display: flex; flex-direction: row">
+      <div style="display: flex; flex-direction: row; justify-content: start">
+        <a class="navbar-brand" style="color: #ffffff"
+          ><strong>Marmut</strong></a
+        >
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{% url 'main:logout' %}"
+                style="color: #000000; background-color: #d6f3fb"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: row; justify-content: right">
+        <a
+          class="nav-link disabled"
+          aria-disabled="true"
+          style="color: #000000; font-weight: bold; background-color: #d6f3fb"
           >Welcome, {{ user }}</a
         >
       </div>
@@ -37,143 +105,112 @@
   </nav>
 </div>
 
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Lagu</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="row mb-3">
-          <div class="col">
-            <div
-              class="table-responsive"
-              style="max-height: 400px; overflow-y: auto"
-            >
-              <table class="table table-bordered table-hover table-info">
-                <thead class="table-info"></thead>
-                <tbody id="testing"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="container" style="margin-top: 20px">
-  <div class="row mb-3">
-    <div class="col">
-      <button class="btn btn-primary" id="button-album">Lihat Album</button>
-      <button class="btn btn-primary" id="button-song">Lihat Lagu</button>
-      <button class="btn btn-primary" id="button-royalti">Lihat Royalti</button>
+  <h2 style="font-weight: bold">USER PLAYLIST DETAIL</h2>
+  <p><strong>Judul:</strong>Playlist 1</p>
+  <p><strong>Pembuat:</strong> Pembuat 1</p>
+  <p><strong>Jumlah Lagu:</strong> 12</p>
+  <p><strong>Total Durasi:</strong> 8 jam 20 menit</p>
+  <p><strong>Tanggal Dibuat:</strong> 18/03/24</p>
+  <p><strong>Deskripsi:</strong> lorem ipsum</p>
+  <div class="row justify-content-center mb-3">
+    <div class="col-auto" style="display: flex; flex-direction: column">
+      <a
+        href=""
+        class="btn btn-primary"
+        id="button-song"
+        style="background-color: #15a3c7; color: white"
+        >Shuffle Play</a
+      >
+      <a
+        href=""
+        class="btn btn-primary"
+        id="button-song"
+        style="background-color: #15a3c7; color: white"
+        >Kembali</a
+      >
     </div>
   </div>
+  <h2 style="font-weight: bold">DAFTAR LAGU</h2>
   <div class="row mb-3">
     <div class="col">
       <div class="table-responsive">
         <table class="table table-bordered table-hover table-info">
-          <thead>
-            <tr>
-              <th style="text-align: center" colspan="4">
-                <div>
-                  <h5>USER PLAYLIST DETAIL</h5>
-                  <p style="text-align: left">
-                    Judul: <span style="font-weight: lighter">Playlist1</span>
-                  </p>
-                  <p style="text-align: left">
-                    Pembuat: <span style="font-weight: lighter">Pembuat1</span>
-                  </p>
-                  <p style="text-align: left">
-                    Jumlah Lagu: <span style="font-weight: lighter">12</span>
-                  </p>
-                  <p style="text-align: left">
-                    Total Durasi:
-                    <span style="font-weight: lighter">8 jam 20 menit</span>
-                  </p>
-                  <p style="text-align: left">
-                    Tanggal Dibuat:
-                    <span style="font-weight: lighter">Pembuat1</span>
-                  </p>
-                  <p style="text-align: left">
-                    Deskripsi:
-                    <span style="font-weight: lighter">Lorem Ipsum….</span>
-                  </p>
-                  <p style="text-align: center;">
-                    <button class="action-button">Shuffle Play</button>
-                  </p>
-                  <p style="text-align: center;">
-                    <button class="action-button">Kembali</button>
-                  </p>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <th style="text-align: center" colspan="4">DAFTAR LAGU</th>
-            </tr>
-            <tr>
-              <th>Judul Lagu</th>
-              <th>Oleh</th>
-              <th>Durasi</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="album_table">
-            <tr>
-              <td>Song1</td>
-              <td>Artist1</td>
-              <td>2 menit</td>
-              <td>
-                <div
-                  style="display: flex; flex-direction: column; width: 150px"
+          <tr class="table-header">
+            <th style="background-color: #15a3c7; color: white">Judul Lagu</th>
+            <th style="background-color: #15a3c7; color: white">Oleh</th>
+            <th style="background-color: #15a3c7; color: white">Durasi</th>
+            <th style="background-color: #15a3c7; color: white">Actions</th>
+          </tr>
+          <tr>
+            <td style="background-color: white">Song1</td>
+            <td style="background-color: white">Artist1</td>
+            <td style="background-color: white">2 menit</td>
+            <td>
+              <div style="display: flex; flex-direction: column">
+                <a
+                  href=""
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Lihat</a
                 >
-                  <button class="action-button">Lihat</button>
-                  <button class="action-button">Play</button>
-                  <button class="action-button">Hapus</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Song2</td>
-              <td>Artist2</td>
-              <td>3 menit</td>
-              <td>
-                <div
-                  style="display: flex; flex-direction: column; width: 150px"
+                <a
+                  href=""
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Play</a
                 >
-                  <button class="action-button">Lihat</button>
-                  <button class="action-button">Play</button>
-                  <button class="action-button">Hapus</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: center" colspan="4">
-                <button class="action-button">Tambah Lagu</button>
-              </td>
-            </tr>
-          </tbody>
+                <a
+                  href=""
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Hapus</a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: white">Song2</td>
+            <td style="background-color: white">Artist2</td>
+            <td style="background-color: white">3 menit</td>
+            <td>
+              <div style="display: flex; flex-direction: column">
+                <a
+                  href=""
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Lihat</a
+                >
+                <a
+                  href=""
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Play</a
+                >
+                <a
+                  href=""
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Hapus</a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000; background-color: #d6f3fb;">Tambah Lagu</a>
+            </td>
+          </tr>
         </table>
       </div>
     </div>
   </div>
 </div>
+<h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

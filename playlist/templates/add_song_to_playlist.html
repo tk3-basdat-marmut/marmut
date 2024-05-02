@@ -1,5 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-
 <style>
   body {font-family: Arial, Helvetica, sans-serif;}
   
@@ -50,7 +49,7 @@
   
   .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: #15a3c7;
     color: white;
   }
   
@@ -84,82 +83,147 @@
   }
   </style>
 
-<div class="container" style="max-width: 95%; margin-bottom: 20px">
-  
-</div>
+<style>
+  ul {
+    list-style: none;
+  }
 
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Lagu</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="row mb-3">
-          <div class="col">
-            <div
-              class="table-responsive"
-              style="max-height: 400px; overflow-y: auto"
-            >
-              <table class="table table-bordered table-hover table-info">
-                <thead class="table-info"></thead>
-                <tbody id="testing"></tbody>
-              </table>
-            </div>
-          </div>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #d6f3fb;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+
+  .container {
+    background: #f0ffff;
+    /* Light cyan background */
+    padding: 20px;
+    border-radius: 5px;
+    /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle box shadow */
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    background-color: white;
+  }
+
+  .table-header {
+    background-color: #15a3c7;
+    color: white;
+  }
+
+  td {
+    background-color: #fff;
+  }
+
+  a {
+    color: white;
+    background-color: #15a3c7;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  a:hover {
+    background-color: #0087a8;
+  }
+</style>
+
+<div class="container" style="max-width: 95%; margin-bottom: 20px">
+  <nav
+    class="navbar navbar-expand-lg"
+    style="background-color: #d6f3fb; border-radius: 20px"
+  >
+    <div class="container-fluid" style="display: flex; flex-direction: row">
+      <div style="display: flex; flex-direction: row; justify-content: start">
+        <a class="navbar-brand" style="color: #ffffff"
+          ><strong>Marmut</strong></a
+        >
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{% url 'main:logout' %}"
+                style="color: #000000; background-color: #d6f3fb"
+                >Logout</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
+      <div style="display: flex; flex-direction: row; justify-content: right">
+        <a
+          class="nav-link disabled"
+          aria-disabled="true"
+          style="color: #000000; font-weight: bold; background-color: #d6f3fb"
+          >Welcome, {{ user }}</a
+        >
       </div>
     </div>
-  </div>
+  </nav>
 </div>
 
 <div class="container" style="margin-top: 20px">
   <div class="row mb-3">
     <div class="col">
-      <button class="btn btn-primary" id="button-album">Lihat Album</button>
-      <button class="btn btn-primary" id="button-song">Lihat Lagu</button>
-      <button class="btn btn-primary" id="button-royalti">Lihat Royalti</button>
-    </div>
-  </div>
-
-  <div style="background-color: #d6f3fb; padding: 5px">
-    <h5 style="text-align: center">SONG DETAIL</h5>
-    <p style="text-align: center">Judul: The Wheels on the Bus</p>
-    <p style="text-align: center">Artist: CoComelon</p>
-    
-    <div style="display: flex; flex-direction: row; justify-content: center;">
-        <label for="playlist">Playlist: </label>
-        <select id="playlists" name="cars">
-          <option value="">Playlist 1</option>
-          <option value="">Playlist 2</option>
-          <option value="">Playlist 3</option>
-        </select>
-    </div>
-
-    <div style="display: flex; flex-direction: column; margin-left: 60px; margin-right: 60px;">
-        <button id="myBtn" style="text-align: center;">TAMBAH</button>
-        <button style="text-align: center;">KEMBALI</button>
+      <div class="table-responsive">
+        <div style="background-color: #d6f3fb; padding: 5px">
+          <h5 style="text-align: center">ADD SONG TO USER PLAYLIST</h5>
+          <p><strong>Judul: </strong>Wheels on the Bus</p>
+          <p><strong>Artist: </strong>CoComelon</p>
+          <div
+            style="display: flex; flex-direction: row; justify-content: center"
+          >
+            <label for="playlist">Playlist: </label>
+            <select id="playlists" name="playlist">
+              <option value="">Playlist 1</option>
+              <option value="">Playlist 2</option>
+              <option value="">Playlist 3</option>
+            </select>
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              margin-left: 60px;
+              margin-right: 60px;
+            "
+          >
+            <button id="myBtn" style="text-align: center">TAMBAH</button>
+            <button style="text-align: center">KEMBALI</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
+<h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
