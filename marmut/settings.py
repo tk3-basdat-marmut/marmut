@@ -39,6 +39,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "main",
     'album_song_royalti',
+    'playlist',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
