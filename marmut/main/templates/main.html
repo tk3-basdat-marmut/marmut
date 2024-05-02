@@ -25,5 +25,11 @@
             Kelola Podcast
         </button>
     </a>
+
+    <a href="{% url 'podcast:r_play_podcast' %}">
+        <button>
+            Play Podcast
+        </button>
+    </a>
     <h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

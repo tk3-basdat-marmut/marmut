@@ -50,3 +50,6 @@ def rd_episode(request):
 
 def c_podcast(request):
     return render(request, "create_podcast.html")
+
+def r_play_podcast(request):
+    return render(request, "podcast_detail.html")
