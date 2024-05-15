@@ -71,11 +71,11 @@
         <tr>
             <th>Metode Pembayaran</th>
             <td>
-                <form action="{% url 'subscribe_package' %}" method="post">
+                <form action="{% url 'c-subscribe-to-package' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="jenis_paket" value="{{ package.jenis }}">
                     <input type="hidden" name="nominal" value="{{ package.harga }}">
-                    <select name="payment-method">
+                    <select name="metode_bayar">
                         <option value="bank_transfer">Transfer Bank</option>
                         <option value="credit_card">Kartu Kredit</option>
                         <option value="e_wallet">E-Wallet</option>

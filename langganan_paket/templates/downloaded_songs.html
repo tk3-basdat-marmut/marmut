@@ -11,7 +11,6 @@
         padding: 20px;
         color: #333;
     }
-
     .container {
         background: #F0FFFF;
         padding: 20px;
@@ -19,28 +18,23 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         margin-bottom: 20px;
     }
-
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
     }
-
     th, td {
         border: 1px solid #ddd;
         padding: 12px;
         text-align: left;
     }
-
     th {
         background-color: #15A3C7;
         color: white;
     }
-
     td {
         background-color: #fff;
     }
-
     button {
         background-color: #15A3C7;
         color: white;
@@ -55,54 +49,45 @@
         border-radius: 4px;
         transition: background-color 0.3s;
     }
-
     button:hover {
         background-color: #0087a8;
     }
-
-
 </style>
 </head>
 <body>
-
 <div class="container">
-    <h2>DAFTAR LAGU</h2>
+    <h2>Downloaded Songs</h2>
     <table>
         <tr>
-            <th>Judul Lagu</th>
-            <th>Oleh</th>
-            <th>Tanggal Download</th>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Download Date</th>
             <th>Actions</th>
         </tr>
         {% for song in songs %}
         <tr>
-            <td>{{ song.song.judul }}</td>
-            <td>{{ song.artist_name }}</td>
-            <td>{{ song.timestamp_download }}</td>
+            <td>{{ song.SONG.judul }}</td>
+            <td>{{ song.SONG.artist_name }}</td> <!-- Update artist details as needed -->
+            <td>{{ song.timestamp_download }}</td> <!-- Adjust to your actual timestamp field -->
             <td>
-                <button onclick="viewSong()">Lihat</button>
-                <form action="{% url 'delete_downloaded_song' song.song.id_konten %}" method="post" style="display: inline;">
+                <!-- <button onclick="location.href='{% url 'song_detail' song.SONG.id_konten %}'">View</button> -->
+                <button>View</button>
+
+                <form action="{% url 'delete_song' song.SONG.id_konten %}" method="post" style="display: inline;">
                     {% csrf_token %}
-                    <input type="hidden" name="song_title" value="{{ song.song.judul }}">
-                    <button type="submit">Hapus</button>
+                    <button type="submit">Delete</button>
                 </form>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="4">No songs downloaded yet.</td>
+            <td colspan="4">No downloaded songs yet.</td>
         </tr>
         {% endfor %}
     </table>
-    <button onclick="goBack()">Kembali</button>
+    <button onclick="goBack()">Back</button>
 </div>
-
 <script>
-    function viewSong() {
-        alert("Navigating to song details.");
-        // Implement navigation logic here
-    }
-
     function goBack() {
         window.history.back();
     }

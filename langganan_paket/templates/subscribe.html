@@ -13,10 +13,10 @@
             color: #333;
         }
         .container {
-            background: #F0FFFF; /* Light cyan background */
+            background: #F0FFFF;
             padding: 20px;
-            border-radius: 5px; /* Rounded corners */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
         h1 {
@@ -76,7 +76,7 @@
                 <td>{{ package.jenis }}</td>
                 <td>{{ package.harga }}</td>
                 <td>
-                    <form method="POST" action="{% url 'subscribe_package' %}">
+                    <form method="POST" action="{% url 'c-subscribe-to-package' %}">
                         {% csrf_token %}
                         <input type="hidden" name="jenis_paket" value="{{ package.jenis }}">
                         <input type="hidden" name="metode_bayar" value="Credit Card"> <!-- Assume a default payment method -->

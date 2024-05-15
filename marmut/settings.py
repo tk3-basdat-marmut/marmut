@@ -37,8 +37,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "main",
-    "langganan_paket",
+    'main',
+    'langganan_paket',
     'album_song_royalti',
     'django.contrib.admin',
     'django.contrib.auth',

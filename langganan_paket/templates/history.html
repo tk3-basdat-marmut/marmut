@@ -72,7 +72,7 @@
         <tbody>
             {% for transaction in transactions %}
             <tr>
-                <td>{{ transaction.jenis_paket.jenis }}</td>
+                <td>{{ transaction.jenis_paket }}</td>
                 <td>{{ transaction.timestamp_dimulai|date:"d M Y H:i" }}</td>
                 <td>{{ transaction.timestamp_berakhir|date:"d M Y H:i" }}</td>
                 <td>{{ transaction.metode_bayar }}</td>

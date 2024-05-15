@@ -1,137 +1,94 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponseNotFound
-from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from supabase import create_client, Client
+from supabase import create_client
 import os
 import uuid
-import datetime
 
 
-# Initialize Supabase client
-def init_supabase():
-    url = os.environ.get('SUPABASE_URL')
-    key = os.environ.get('SUPABASE_KEY')
-    if not url or not key:
-        raise ValueError("Supabase URL and Key must be set in the environment.")
+# Setup Supabase client
+def get_supabase_client():
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
     return create_client(url, key)
 
 
-@csrf_exempt
-@login_required
-def subscribe_package(request):
+def r_list_packages(request):
+    supabase = get_supabase_client()
+    response = supabase.table("PAKET").select("*").execute()
+    packages = response.data
+    return JsonResponse(packages, safe=False)
+
+
+def c_subscribe_to_package(request):
     if request.method == "POST":
-        email = request.user.email
+        supabase = get_supabase_client()
+        email = request.POST.get("email")
         jenis_paket = request.POST.get("jenis_paket")
+        timestamp_dimulai = request.POST.get("timestamp_dimulai")
+        timestamp_berakhir = request.POST.get("timestamp_berakhir")
         metode_bayar = request.POST.get("metode_bayar")
-        nominal = int(request.POST.get("nominal"))
-        
-        supabase = init_supabase()
-        # Generate UUID for transaction ID
+        nominal = request.POST.get("nominal")
         transaction_id = str(uuid.uuid4())
-        # Current timestamp
-        timestamp_now = datetime.datetime.now()
-        # Subscription validity (e.g., one month)
-        timestamp_end = timestamp_now + datetime.timedelta(days=30)
-
-        try:
-            # Insert transaction into TRANSACTION table
-            transaction_response = supabase.table("TRANSACTION").insert({
-                "id": transaction_id,
-                "jenis_paket": jenis_paket,
-                "email": email,
-                "timestamp_dimulai": timestamp_now,
-                "timestamp_berakhir": timestamp_end,
-                "metode_bayar": metode_bayar,
-                "nominal": nominal,
-            }).execute()
-
-            # Check and insert into PREMIUM if not already a member
-            premium_check = supabase.table("PREMIUM").select("*").eq("email", email).execute()
-            if premium_check.data == []:
-                supabase.table("PREMIUM").insert({"email": email}).execute()
-
-            return HttpResponseRedirect(reverse('subscription_success'))
-        except Exception as e:
-            # Log this error to a logging system ideally
-            return HttpResponseNotFound('An error occurred during the subscription process.')
-
-    else:
-        # Fetch available packages
-        supabase = init_supabase()
-        packages = supabase.table("PAKET").select("*").execute().data
-        return render(request, 'subscribe.html', {'packages': packages})
-
-
-@login_required
-def transaction_history(request):
-    email = request.user.email
-    supabase = init_supabase()
-    transactions = supabase.table("TRANSACTION").select("*").eq("email", email).order("timestamp_dimulai", desc=True).execute().data
-    return render(request, 'payment.html', {'transactions': transactions})
-
-
-def subscription_success(request):
-    return render(request, 'history.html')
-
-
-@login_required
-def search(request):
-    query = request.GET.get('query', '')
-    supabase = init_supabase()
-
-    if query:
-        songs = supabase.table("SONG").select("*, artist:ARTIST (*)").ilike("judul", f"%{query}%").execute().data
-        podcasts = supabase.table("PODCAST").select("*, podcaster:PODCASTER (*)").ilike("judul", f"%{query}%").execute().data
-        user_playlists = supabase.table("USER_PLAYLIST").select("*, creator:AKUN (*)").ilike("judul", f"%{query}%").execute().data
-        
-        results = {
-            'songs': songs,
-            'podcasts': podcasts,
-            'user_playlists': user_playlists
+        transaction = {
+            "id": transaction_id,
+            "jenis_paket": jenis_paket,
+            "email": email,
+            "timestamp_dimulai": timestamp_dimulai,
+            "timestamp_berakhir": timestamp_berakhir,
+            "metode_bayar": metode_bayar,
+            "nominal": nominal
         }
-    else:
-        results = {}
-
-    return render(request, 'search.html', {'query': query, 'results': results})
-
-
-@login_required
-def downloaded_songs(request):
-    supabase = init_supabase()
-    email = request.user.email
-    # Fetch songs that have been downloaded by the user
-    downloaded_songs = supabase.table("DOWNLOADED_SONG").select("*, song:SONG (*)").eq("email_downloader", email).execute().data
-    
-    # For additional details like artist name, you might need to make additional queries or adjust your database structure for easier access
-    songs_with_details = []
-    for entry in downloaded_songs:
-        song_id = entry['song']['id_konten']
-        artist_details = supabase.table("ARTIST").select("*").eq("id", entry['song']['id_artist']).execute().data
-        entry['artist_name'] = artist_details[0]['name'] if artist_details else "Unknown Artist"
-        songs_with_details.append(entry)
-
-    return render(request, 'downloaded_songs.html', {'songs': songs_with_details})
+        supabase.table("TRANSACTION").insert(transaction).execute()
+        return HttpResponse("Subscription successful", status=201)
+    return HttpResponse("Invalid request", status=400)
 
 
-@login_required
-@csrf_exempt
-def delete_downloaded_song(request, song_id):
-    if request.method == 'POST':
-        supabase = init_supabase()
+def r_transaction_history(request, email):
+    supabase = get_supabase_client()
+    response = supabase.table("TRANSACTION").select("*").eq("email", email).order("timestamp_dimulai", desc=True).execute()
+    history = response.data
+    return JsonResponse(history, safe=False)
+
+
+def search_content(request):
+    query = request.GET.get('q', '')
+    supabase = get_supabase_client()
+    # Search for songs, podcasts, and user playlists
+    songs = supabase.table("SONG").select("*, ARTIST(*)").ilike('judul', f'%{query}%').execute().data
+    podcasts = supabase.table("PODCAST").select("*, PODCASTER(*)").ilike('judul', f'%{query}%').execute().data
+    user_playlists = supabase.table("USER_PLAYLIST").select("*, AKUN(email)").ilike('judul', f'%{query}%').execute().data
+
+    results = {
+        'songs': songs,
+        'podcasts': podcasts,
+        'user_playlists': user_playlists
+    }
+    # If no results found, display a message
+    if not (songs or podcasts or user_playlists):
+        return render(request, 'search.html', {'message': 'No results found for your search.'})
+
+    return render(request, 'search_results.html', {'results': results, 'query': query})
+
+
+def r_downloaded_songs(request):
+    supabase = get_supabase_client()
+    email = request.user.email  # Assuming authentication
+    response = supabase.table("DOWNLOADED_SONG").select("*, SONG(*)").eq("email_downloader", email).execute()
+    return render(request, "downloaded_songs.html", {'songs': response.data})
+
+
+def song_detail(request, id_song):
+    supabase = get_supabase_client()
+    response = supabase.table("SONG").select("*").eq("id_konten", id_song).execute()
+    song_details = response.data[0] if response.data else None
+    return render(request, "song_detail.html", {'song': song_details})
+
+
+def d_downloaded_songs(request, id_song):
+    if request.method == "POST":
+        supabase = get_supabase_client()
         email = request.user.email
-        song_title = request.POST.get('song_title')
-
-        # Delete the song from downloaded list
-        delete_response = supabase.table("DOWNLOADED_SONG").delete().match({"id_song": song_id, "email_downloader": email}).execute()
-        
-        if delete_response.status_code == 200:
-            # Decrement the total_download counter
-            supabase.table("SONG").update({"total_download": supabase.raw("total_download - 1")}).eq("id_konten", song_id).execute()
-            message = f"Berhasil menghapus Lagu dengan judul ‘{song_title}’ dari daftar unduhan!"
-            return render(request, 'deletion_success.html', {'message': message})
-        else:
-            return HttpResponseNotFound('Failed to delete the song.')
-
-    return HttpResponseNotAllowed(['POST'])
+        supabase.table("DOWNLOADED_SONG").delete().match({"id_song": id_song, "email_downloader": email}).execute()
+        return redirect('r-downloaded-songs')
+    return HttpResponse("Method not allowed", status=405)

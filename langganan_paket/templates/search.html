@@ -1,139 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Search Results</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #d6f3fb;
-        margin: 0;
-        padding: 20px;
-        color: #333;
-    }
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6f3fb;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
 
-    #searchForm {
-        background: #F0FFFF;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
+        #searchForm {
+            background: #F0FFFF;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-    input[type="text"] {
-        width: 80%;
-        padding: 10px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-    }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
 
-    button {
-        background-color: #15A3C7;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
+        button {
+            background-color: #15A3C7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
 
-    button:hover {
-        background-color: #0087a8;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #15A3C7;
-        color: white;
-    }
-
-    td {
-        background-color: #fff;
-    }
-
-    .view-btn {
-        background-color: #15A3C7;
-        border: none;
-        color: white;
-        padding: 8px 16px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
-        margin: 4px 2px;
-        transition: background-color 0.3s;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-
-    .view-btn:hover {
-        background-color: #0087a8;
-    }
-</style>
+        button:hover {
+            background-color: #0087a8;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <form id="searchForm" method="get" action="{% url 'search_content' %}">
-        <input type="text" id="query" name="query" placeholder="Search for songs, podcasts, or playlists" value="{{ query }}">
+    <form id="searchForm" action="{% url 'search-content' %}" method="get">
+        <input type="text" name="q" placeholder="Search songs, podcasts, playlists..." value="{{ query|default:'' }}">
         <button type="submit">Cari</button>
     </form>
-</div>
-<div id="results">
-    {% if results %}
-        <table>
-            <tr>
-                <th>Tipe</th>
-                <th>Judul</th>
-                <th>Oleh</th>
-                <th>Actions</th>
-            </tr>
-            {% for song in results.songs %}
-            <tr>
-                <td>Song</td>
-                <td>{{ song.title }}</td>
-                <td>{{ song.artist.name }}</td>
-                <td><button onclick="window.location.href='{% url 'song_detail' song.id %}'" class="view-btn">View</button></td>
-            </tr>
-            {% endfor %}
-            {% for podcast in results.podcasts %}
-            <tr>
-                <td>Podcast</td>
-                <td>{{ podcast.title }}</td>
-                <td>{{ podcast.podcaster.name }}</td>
-                <td><button onclick="window.location.href='{% url 'podcast_detail' podcast.id %}'" class="view-btn">View</button></td>
-            </tr>
-            {% endfor %}
-            {% for user_playlist in results.user_playlists %}
-            <tr>
-                <td>User Playlist</td>
-                <td>{{ user_playlist.title }}</td>
-                <td>{{ user_playlist.creator.name }}</td>
-                <td><button onclick="window.location.href='{% url 'playlist_detail' user_playlist.id %}'" class="view-btn">View</button></td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>Maaf, pencarian untuk "{{ query }}" tidak ditemukan.</p>
+    {% if message %}
+        <p>{{ message }}</p>
     {% endif %}
-</div>
 </body>
 </html>
