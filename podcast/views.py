@@ -67,4 +67,16 @@ def c_podcast(request):
     return render(request, "create_podcast.html")
 
 def r_play_podcast(request):
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    supabase = create_client(url, key)
+    test = supabase.table("episode").select("*").execute()
+    response = test.data
+    # Convert dictionary to JSON response
+    return JsonResponse(response, safe=False)
+
+def show_play_podcast(request):
     return render(request, "podcast_detail.html")
+
+# def r_play_podcast(request):
+#     return render(request, "podcast_detail.html")

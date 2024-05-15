@@ -102,34 +102,69 @@
          <a href="{% url 'main:show_main' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kembali</a>
     </div>
     </div>
-    <h2 style="font-weight: bold;">DAFTAR EPISODE PADA PODCAST1</h2>
+    <!-- <h2 style="font-weight: bold;">DAFTAR EPISODE PADA PODCAST1</h2> -->
     <div class="row mb-3">
         <div class="col">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-info">
-                    <tr class="table-header">
-                        <th style="background-color: #15a3c7; color: white;">Judul Episode</th>
-                        <th style="background-color: #15a3c7; color: white;">Deskripsi</th>
-                        <th style="background-color: #15a3c7; color: white;">Durasi</th>
-                        <th style="background-color: #15a3c7; color: white;">Tanggal</th>
-                    </tr>
-                    <tr>
-                        <td style="background-color: white;">SubJudul1</td>
-                        <td style="background-color: white;"">Lorem Ipsum ...</td>
-                        <td style="background-color: white;">59 menit</td>
-                        <td style="background-color: white;">18/03/2024</td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: white;">SubJudul2</td>
-                        <td style="background-color: white;"">Lorem Ipsum ...</td>
-                        <td style="background-color: white;">1 jam 2 menit</td>
-                        <td style="background-color: white;">25/03/2024</td>
-                    </tr>
+                    <thead class="table-info"> 
+                    </thead>
+                    <tbody id="album_table">
+                        <!-- Transaction data -->
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    async function getEpisodes() {
+    return fetch("{% url 'podcast:r_play_podcast' %}").then((res) => res.json())
+}
+
+async function displayEpisode() {
+    document.getElementById("album_table").innerHTML = "";
+    const episodes = await getEpisodes();
+    let htmlString = `<table class="table table-bordered table-hover table-info">
+        <tr>
+            <th colspan="6" style="text-align:center;">DAFTAR EPISODE</th>
+        </tr>
+        <thead>
+            <tr class="table-header">
+                <th style="background-color: #15a3c7; color: white;">Judul Episode</th>
+                <th style="background-color: #15a3c7; color: white;">Deskripsi</th>
+                <th style="background-color: #15a3c7; color: white;">Durasi</th>
+                <th style="background-color: #15a3c7; color: white;">Tanggal</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    episodes.forEach((item) => {
+        let durasiFormatted;
+        if (item.durasi >= 60) {
+            const jam = Math.floor(item.durasi / 60);
+            const menit = item.durasi % 60;
+            durasiFormatted = `${jam} jam ${menit} menit`;
+        } else {
+            durasiFormatted = `${item.durasi} menit`;
+        }
+
+        htmlString += `<tr>
+            <td>${item.judul}</td>
+            <td>${item.deskripsi}</td>
+            <td>${durasiFormatted}</td>
+            <td>${item.tanggal_rilis}</td>
+        </tr>`;
+    });
+
+    htmlString += `</tbody></table>`;
+
+    document.getElementById("album_table").innerHTML = htmlString;
+}
+
+    displayEpisode()
+</script>
 <!-- <h5 style="text-align: center;">Sesi terakhir login: {{ last_login }}</h5> -->
 
 <!-- <script>

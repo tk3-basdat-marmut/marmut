@@ -116,6 +116,7 @@
     <div class="col-auto">
         <button class="btn btn-primary" id="button-album" style="background-color: #15a3c7; color:white">List Podcast</button>
         <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a>
+        <a href="{% url 'podcast:show_play_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Play Podcast</a>
     </div>
 </div>
 
@@ -154,15 +155,22 @@ async function displayPodcast() {
                                 <th style="background-color: #15a3c7; color: white;">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                   </tr>`;
+                        <tbody>`;
 
     podcasts.forEach((item) => {
+        let durasiFormatted;
+        if (item.total_durasi >= 60) {
+            const jam = Math.floor(item.total_durasi / 60);
+            const menit = item.total_durasi % 60;
+            durasiFormatted = `${jam} jam ${menit} menit`;
+        } else {
+            durasiFormatted = `${item.total_durasi} menit`;
+        }
+
         htmlString += `<tr>
                         <td>${item.judul_podcast}</td>
                         <td>${item.jumlah_episode}</td>
-                        <td>${item.total_durasi}</td>
+                        <td>${durasiFormatted}</td>
                         <td>
                             <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Lihat Daftar Episode</a>
                             <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Tambah Episode</a>
@@ -175,6 +183,7 @@ async function displayPodcast() {
 
     document.getElementById("album_table").innerHTML = htmlString;
 }
+
 
     displayPodcast()
 </script>
