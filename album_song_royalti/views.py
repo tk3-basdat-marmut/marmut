@@ -26,7 +26,7 @@ def dashboard(request):
     context = {
         'name': '.....',
         'class': '....',
-        'last_login': request.COOKIES['last_login'],
+        # 'last_login': request.COOKIES['last_login'],
     }
 
     return render(request, "album_song_royalti_dashboard.html", context)

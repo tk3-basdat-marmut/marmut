@@ -12,12 +12,9 @@
 
     .container {
         background: #F0FFFF;
-        /* Light cyan background */
         padding: 20px;
         border-radius: 5px;
-        /* Rounded corners */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Subtle box shadow */
         margin-bottom: 20px;
     }
 
@@ -122,114 +119,63 @@
     </div>
 </div>
 
-
 <div class="container" style="margin-top: 20px;">
     <h2 style="font-weight: bold;">LIST PODCAST</h2>
     <div class="row mb-3">
         <div class="col">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-info">
-                    <tr class="table-header">
-                        <th style="background-color: #15a3c7; color: white;">Judul</th>
-                        <th style="background-color: #15a3c7; color: white;">Jumlah Episode</th>
-                        <th style="background-color: #15a3c7; color: white;">Total Durasi</th>
-                        <th style="background-color: #15a3c7; color: white;">Action</th>
-                    </tr>
-                    <tr>
-                        <td style="background-color: white;">Podcast1</td>
-                        <td style="background-color: white;"">0</td>
-                        <td style="background-color: white;">0 menit</td>
-                        <td style="background-color: white;">
-                            <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Lihat Daftar Episode</a>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahEpisodeModal" style="background-color: #15a3c7; color:white">Tambah Episode</button>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#hapusEpisodeModal" style="background-color: #15a3c7; color:white">Hapus</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: white;">Podcast2</td>
-                        <td style="background-color: white;">2</td>
-                        <td style="background-color: white;">4 menit</td>
-                        <td style="background-color: white;">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#lihatEpisodeModal" style="background-color: #15a3c7; color:white">Lihat Daftar Episode</button>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahEpisodeModal" style="background-color: #15a3c7; color:white">Tambah Episode</button>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#hapusEpisodeModal" style="background-color: #15a3c7; color:white">Hapus</button>
-                        </td>
-                    </tr>
+                    <thead class="table-info"> 
+                        </thead>
+                        <tbody id="album_table">
+                            <!-- Transaction data -->
+                        </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-<!-- <h5 style="text-align: center;">Sesi terakhir login: {{ last_login }}</h5> -->
 
-<!-- <script>
-async function getPodcasts() {
+<script>
+    async function getPodcasts() {
     return fetch("{% url 'podcast:r_podcast' %}").then((res) => res.json())
 }
 
-async function getCharts() {
-    return fetch("{% url 'podcast:r_chart' %}").then((res) => res.json())
+async function displayPodcast() {
+    document.getElementById("album_table").innerHTML = "";
+    const podcasts = await getPodcasts();
+    let htmlString = `<table class="table table-bordered table-hover table-info">
+                       
+                        <thead>
+                            <tr class="table-header">
+                                <th style="background-color: #15a3c7; color: white;">Judul</th>
+                                <th style="background-color: #15a3c7; color: white;">Jumlah Episode</th>
+                                <th style="background-color: #15a3c7; color: white;">Durasi</th>
+                                <th style="background-color: #15a3c7; color: white;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                   </tr>`;
+
+    podcasts.forEach((item) => {
+        htmlString += `<tr>
+                        <td>${item.judul_podcast}</td>
+                        <td>${item.jumlah_episode}</td>
+                        <td>${item.total_durasi}</td>
+                        <td>
+                            <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Lihat Daftar Episode</a>
+                            <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Tambah Episode</a>
+                            <a href="{% url 'podcast:rd_episode' %}" class="btn btn-primary" style="background-color: #15a3c7; color:white">Hapus</a>
+                        </td>
+                    </tr>`;
+    });
+
+    htmlString += `</tbody></table>`;
+
+    document.getElementById("album_table").innerHTML = htmlString;
 }
 
-async function displayPodcast() {
-        document.getElementById("podcast_table").innerHTML = ""
-        const podcasts = await getPodcasts()
-        let htmlString = ``
-        htmlString += `\n<tr>
-                            <th>ID</th>
-                            <th>Email Podcaster</th>
-                            <th>Action</th>
-                        </tr>`;
-        podcasts.forEach((item) => {
-            htmlString += `\n<tr>
-            <td>${item.id_konten}</td>
-            <td>${item.email_podcaster}</td>
-            <td>
-                <button class="action-button lihat-lagu-modal" data-id="${item.id_konten}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Podcast</button>
-                <button class="action-button">Edit Podcast</button>
-                <button class="action-button">Hapus Podcast</button>
-            </td>
-        </tr>`;
-        })
-        document.getElementById("podcast_table").innerHTML = htmlString
-    }
-
-    async function displayChart() {
-        document.getElementById("podcast_table").innerHTML = ""
-        const charts = await getCharts()
-        let htmlString = ``
-        htmlString += `\n<tr>
-                            <th>Tipe</th>
-                            <th>ID</th>
-                            <th>Action</th>
-                        </tr>`;
-        charts.forEach((item) => {
-            htmlString += `\n<tr>
-            <td>${item.tipe}</td>
-            <td>${item.id_playlist}</td>
-            <td>
-                <button class="action-button lihat-lagu-modal" data-id="${item.id_playlist}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Podcast</button>
-                <button class="action-button">Edit Chart</button>
-            </td>
-        </tr>`;
-        })
-        document.getElementById("podcast_table").innerHTML = htmlString
-    }
-
     displayPodcast()
-    // document.addEventListener('click', function(e) {
-    //     if (e.target && e.target.classList.contains('lihat-lagu-modal')) {
-    //         const itemId = e.target.dataset.id;
-    //         console.log("Item ID:", itemId);
-    //         getSongs2(itemId); // Pass the itemId to the getSongs2 function
-    //     }
-    // });
-
-    const buttonPodcast = document.getElementById('button-podcast');
-    const buttonChart = document.getElementById('button-chart');
-
-    buttonPodcast.addEventListener('click', displayPodcast);
-    buttonChart.addEventListener('click', displayChart);
-
-</script> -->
+</script>
 {% endblock content %}

@@ -16,6 +16,7 @@ from django.http import HttpResponse
 from django.core import serializers
 import json
 from django.http import JsonResponse
+# from .asdf import fetch_podcast_details
 
 # Create your views here.
 def dashboard(request):
@@ -31,10 +32,24 @@ def r_podcast(request):
     url = os.environ.get("SUPABASE_URL")
     key = os.environ.get("SUPABASE_KEY")
     supabase = create_client(url, key)
-    test = supabase.table("podcast").select("*").execute()
+    test = supabase.table("podcast_list").select("*").execute()
     response = test.data
     # Convert dictionary to JSON response
     return JsonResponse(response, safe=False)
+
+# def r_podcast(request):
+#     details_list = fetch_podcast_details()
+#     # return JsonResponse(response, safe=False)
+#     return render(request, 'podcast.html', {'details_list': details_list})
+
+# def r_podcast(request):
+#     url = os.environ.get("SUPABASE_URL")
+#     key = os.environ.get("SUPABASE_KEY")
+#     supabase = create_client(url, key)
+#     test = supabase.table("podcast").select("*").execute()
+#     response = test.data
+#     # Convert dictionary to JSON response
+#     return JsonResponse(response, safe=False)
 
 def r_chart(request):
     url = os.environ.get("SUPABASE_URL")
