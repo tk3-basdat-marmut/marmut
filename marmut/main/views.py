@@ -20,7 +20,7 @@ def show_main(request):
         'Tempat Lahir':'...',
         'Tanggal Lahir':'...',
         'Role':'...',
-        'last_login': request.COOKIES['last_login'],
+        # 'last_login': request.COOKIES['last_login'],
     }
 
     return render(request, "main.html", context)
