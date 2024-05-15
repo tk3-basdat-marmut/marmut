@@ -62,46 +62,29 @@
     <table>
         <tr>
             <th>Jenis</th>
-            <td><span id="package-type"></span></td>
+            <td>{{ package.jenis }}</td>
         </tr>
         <tr>
             <th>Harga</th>
-            <td><span id="package-price"></span></td>
+            <td>{{ package.harga }}</td>
         </tr>
         <tr>
             <th>Metode Pembayaran</th>
             <td>
-
-                <form action="history.html" method="get"> <!-- Change action to history.html and method to get -->
-                    <input type="hidden" id="hidden-type" name="jenis" value="">
-                    <input type="hidden" id="hidden-price" name="harga" value="">
-                    <select id="payment-method" name="payment-method">
+                <form action="{% url 'subscribe_package' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="jenis_paket" value="{{ package.jenis }}">
+                    <input type="hidden" name="nominal" value="{{ package.harga }}">
+                    <select name="payment-method">
                         <option value="bank_transfer">Transfer Bank</option>
                         <option value="credit_card">Kartu Kredit</option>
                         <option value="e_wallet">E-Wallet</option>
                     </select>
-                    <button type="submit">SUBMIT</button>
+                    <button type="submit">Bayar</button>
                 </form>
-
             </td>
         </tr>
     </table>
 </div>
-
-
-<script>
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('jenis');
-        const price = urlParams.get('harga');
-    
-        document.getElementById('package-type').textContent = type || '1 Bulan';
-        document.getElementById('package-price').textContent = price || 'Rp54,900';
-        document.getElementById('hidden-type').value = type || '1 Bulan'; // Set value of hidden input
-        document.getElementById('hidden-price').value = price || 'Rp54,900'; // Set value of hidden input
-    };
-</script>
-    
-
 </body>
 </html>

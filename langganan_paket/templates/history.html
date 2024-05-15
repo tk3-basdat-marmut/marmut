@@ -19,7 +19,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
             margin-bottom: 20px;
         }
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
         }
@@ -70,28 +70,22 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Dynamic rows go here -->
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.jenis_paket.jenis }}</td>
+                <td>{{ transaction.timestamp_dimulai|date:"d M Y H:i" }}</td>
+                <td>{{ transaction.timestamp_berakhir|date:"d M Y H:i" }}</td>
+                <td>{{ transaction.metode_bayar }}</td>
+                <td>{{ transaction.nominal }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No transactions found.</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <button onclick="window.history.back();">Kembali</button>
 </div>
-<script>
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('jenis');
-        const price = urlParams.get('harga');
-        const paymentMethod = urlParams.get('payment-method');
-    
-        const tbody = document.querySelector('tbody');
-        const newRow = `<tr>
-            <td>${type}</td>
-            <td>Today's Date</td> <!-- Adjust as needed -->
-            <td>End Date Calculation</td> <!-- Adjust as needed -->
-            <td>${paymentMethod}</td>
-            <td>${price}</td>
-        </tr>`;
-        tbody.innerHTML = newRow;
-    };
-</script>
 </body>
 </html>

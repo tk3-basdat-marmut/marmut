@@ -40,7 +40,7 @@
         td {
             background-color: #fff;
         }
-        a {
+        button {
             color: white;
             background-color: #15A3C7;
             padding: 8px 16px;
@@ -51,9 +51,10 @@
             margin: 4px 2px;
             cursor: pointer;
             border-radius: 4px;
+            border: none;
             transition: background-color 0.3s;
         }
-        a:hover {
+        button:hover {
             background-color: #0087a8;
         }
     </style>
@@ -69,32 +70,23 @@
                 <th>Action</th>
             </tr>
         </thead>
-
         <tbody>
+            {% for package in packages %}
             <tr>
-                <td>1 Bulan</td>
-                <td>Rp54,900</td>
-                <td><a href="payment.html?jenis=1%20Bulan&harga=Rp54,900">Berlangganan</a></td>
+                <td>{{ package.jenis }}</td>
+                <td>{{ package.harga }}</td>
+                <td>
+                    <form method="POST" action="{% url 'subscribe_package' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="jenis_paket" value="{{ package.jenis }}">
+                        <input type="hidden" name="metode_bayar" value="Credit Card"> <!-- Assume a default payment method -->
+                        <input type="hidden" name="nominal" value="{{ package.harga }}">
+                        <button type="submit">Berlangganan</button>
+                    </form>
+                </td>
             </tr>
-            <tr>
-                <td>3 Bulan</td>
-                <td>Rp150,000</td>
-                <td><a href="payment.html?jenis=3%20Bulan&harga=Rp150,000">Berlangganan</a></td>
-            </tr>
-            <tr>
-                <td>6 Bulan</td>
-                <td>Rp280,000</td>
-                <td><a href="payment.html?jenis=6%20Bulan&harga=Rp280,000">Berlangganan</a></td>
-            </tr>
-            <tr>
-                <td>1 Tahun</td>
-                <td>Rp520,000</td>
-                <td><a href="payment.html?jenis=1%20Tahun&harga=Rp520,000">Berlangganan</a></td>
-            </tr>
-        </tbody>        
-
-
-
+            {% endfor %}
+        </tbody>
     </table>
 </div>
 </body>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Deletion Success</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d6f3fb;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+
+    .container {
+        background: #F0FFFF;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    button {
+        background-color: #15A3C7;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0087a8;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <p>{{ message }}</p>
+    <button onclick="window.history.back()">Kembali</button>
+</div>
+</body>
+</html>
