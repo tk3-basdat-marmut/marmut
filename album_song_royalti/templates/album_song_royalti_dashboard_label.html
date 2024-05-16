@@ -11,21 +11,12 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {% if status == "Artist" or status == "Songwriter" %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'album_song_royalti:dashboard' %}" style="color: #000000;">Lihat Album</a>
                         </li>
-                        {% endif %}
-                        {% if status == "Podcaster" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'album_song_royalti:podcast_render' %}" style="color: #000000;">Lihat Podcast</a>
-                        </li>
-                        {% endif %}
-                        {% if status == "Songwriter" or status == "Artist" or status == "Label" %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'album_song_royalti:royalti_render' %}" style="color: #000000;">Lihat Royalti</a>
                         </li>
-                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
                         </li>
@@ -211,11 +202,6 @@
     
 
     <div class="container" style="margin-top: 20px;">
-        <div class="row mb-3">
-            <div class="col">
-                <button class="btn btn-primary" id="button-tambah-album" data-bs-toggle="modal" data-bs-target="#exampleModalTambahAlbum">Tambah Album</button>
-            </div>
-        </div>
         <div class="row mb-3">
             <div class="col">
                 <div class="table-responsive">

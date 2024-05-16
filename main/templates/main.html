@@ -3,6 +3,9 @@
 {% block content %}
     <h1>Marmut Page</h1>
 
+    <h5>ID:</h5>
+    <p>{{ id }}</p>
+
     <h5>Name:</h5>
     <p>{{ name }}</p>
 
@@ -26,6 +29,9 @@
 
     <h5>Kota Asal:</h5>
     <p>{{ kota_asal }}</p>
+
+    <h5>Status:</h5>
+    <p>{{ status }}</p>
 
     <a href="{% url 'main:logout' %}">
         <button>
