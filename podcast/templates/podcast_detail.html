@@ -120,7 +120,7 @@
 
 <script>
     async function getEpisodes() {
-    return fetch("{% url 'podcast:r_play_podcast' %}").then((res) => res.json())
+    return fetch("{% url 'podcast:r_episode' %}").then((res) => res.json())
 }
 
 async function displayEpisode() {

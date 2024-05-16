@@ -32,7 +32,25 @@ def r_podcast(request):
     url = os.environ.get("SUPABASE_URL")
     key = os.environ.get("SUPABASE_KEY")
     supabase = create_client(url, key)
-    test = supabase.table("podcast_list").select("*").execute()
+    test = supabase.table("podcast_detail_list").select("*").execute()
+    response = test.data
+    # Convert dictionary to JSON response
+    return JsonResponse(response, safe=False)
+
+def r_podcast_detail(request, id):
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    supabase = create_client(url, key)
+    test = supabase.table("podcast_view").select("*").eq('id', id).execute()
+    response = test.data
+    # Convert dictionary to JSON response
+    return JsonResponse(response, safe=False)
+
+def r_episode(request, id_konten_podcast):
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    supabase = create_client(url, key)
+    test = supabase.table("episode").select("*").eq('id_konten_podcast', id_konten_podcast).execute()
     response = test.data
     # Convert dictionary to JSON response
     return JsonResponse(response, safe=False)
@@ -77,6 +95,9 @@ def r_play_podcast(request):
 
 def show_play_podcast(request):
     return render(request, "podcast_detail.html")
+
+def list_podcast(request):
+    return render(request, "podcast2.html")
 
 # def r_play_podcast(request):
 #     return render(request, "podcast_detail.html")

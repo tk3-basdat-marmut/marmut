@@ -114,9 +114,10 @@
 
 <div class="row justify-content-center mb-3">
     <div class="col-auto">
-        <button class="btn btn-primary" id="button-album" style="background-color: #15a3c7; color:white">List Podcast</button>
+        <a href="{% url 'podcast:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Podcast</a>
+    
         <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a>
-        <a href="{% url 'podcast:show_play_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Play Podcast</a>
+        <a href="{% url 'podcast:list_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Podcast</a>
     </div>
 </div>
 
@@ -168,7 +169,7 @@ async function displayPodcast() {
         }
 
         htmlString += `<tr>
-                        <td>${item.judul_podcast}</td>
+                        <td>${item.judul}</td>
                         <td>${item.jumlah_episode}</td>
                         <td>${durasiFormatted}</td>
                         <td>
