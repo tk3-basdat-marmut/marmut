@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container" style="max-width: 95%; margin-bottom: 20px;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: #000000;"><strong>Marmut</strong></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {% if status == "Artist" or status == "Songwriter" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'album_song_royalti:dashboard' %}" style="color: #000000;">Lihat Album</a>
+                        </li>
+                        {% endif %}
+                        {% if status == "Podcaster" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'album_song_royalti:podcast_render' %}" style="color: #000000;">Lihat Podcast</a>
+                        </li>
+                        {% endif %}
+                        {% if status == "Songwriter" or status == "Artist" or status == "Label" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'album_song_royalti:royalti_render' %}" style="color: #000000;">Lihat Royalti</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+                        </li>
+                    </ul>
+                    <a class="nav-link disabled" aria-disabled="true" style="color: #000000;">Welcome, {{ nama }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="modal fade" id="exampleModalTambahPodcast" tabindex="-1" aria-labelledby="exampleModalLabelTambahPodcast" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabelTambahPodcast">Add New Podcast</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTambahPodcast" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="judul_podcast" class="col-form-label">Judul Podcast:</label>
+                            <input type="text" class="form-control" id="judul_podcast" name="judul_podcast">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="col-form-label">Email:</label>
+                            <select class="form-select" id="email" name="email">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genre" class="col-form-label">Genre:</label>
+                            <select class="form-select" id="genre" name="genre">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>                        
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_podcast_add" data-bs-dismiss="modal">Add Podcast</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Episode</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered table-hover table-info">
+                                    <thead class="table-info"> 
+                                    </thead>
+                                    <tbody id="testing">
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 20px;">
+        <div class="row mb-3">
+            <div class="col">
+                <button class="btn btn-primary" id="button-tambah-album" data-bs-toggle="modal" data-bs-target="#exampleModalTambahPodcast">Tambah Podcast</button>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-info">
+                        <thead class="table-info"> 
+                        </thead>
+                        <tbody id="album_table">
+                            <!-- Transaction data -->
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function getEpisodes(id) {
+            fetch(`/album_song_royalti/fetch-episodes/${id}`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("testing").innerHTML = "";
+                    return response.json();
+                } else {
+                    console.error('Failed.');
+                }
+            })
+            .then(data => {
+                // Extract the 'episode' array from the response
+                const episodes = data[0].episode;
+                console.log(episodes);
+
+                let htmlString = `
+                    <tr>
+                        <th>Judul</th>
+                        <th>Durasi</th>
+                        <th>Deskripsi</th>
+                        <th>Tanggal Rilis</th>
+                        <th>Action</th>
+                    </tr>`;
+
+                episodes.forEach((episode) => {
+                    htmlString += `
+                        <tr>
+                            <td>${episode.judul}</td>
+                            <td>${episode.durasi}</td>
+                            <td>${episode.deskripsi}</td>
+                            <td>${episode.tanggal_rilis}</td>
+                            <td><button class="action-button">Hapus</button></td>
+                        </tr>`;
+                });
+
+                // Update the table with the new content
+                document.getElementById("testing").innerHTML = htmlString;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('lihat-episode-modal')) {
+                const itemId = e.target.dataset.id;
+                console.log("Item ID:", itemId);
+                getEpisodes(itemId); // Pass the itemId to the getSongs2 function
+            }
+        });
+
+        async function getPodcasts() {
+            return fetch("{% url 'album_song_royalti:r_podcast' %}").then((res) => res.json())
+        }
+
+        async function fetchGenres() {
+            try {
+                const response = await fetch("{% url 'album_song_royalti:fetch_genres' %}");
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to fetch labels');
+                }
+            } catch (error) {
+                console.error('Error fetching labels:', error);
+            }
+        }
+
+        async function fetchPodcasters() {
+            try {
+                const response = await fetch("{% url 'album_song_royalti:fetch_podcasters' %}");
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to fetch labels');
+                }
+            } catch (error) {
+                console.error('Error fetching labels:', error);
+            }
+        }
+
+        async function populateLabelDropdown() {
+            const genres = await fetchGenres();
+            const podcasters = await fetchPodcasters();
+
+            const genreSelect = document.getElementById('genre');
+            genres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre;
+                option.textContent = genre;
+                genreSelect.appendChild(option);
+            });
+
+            const podcasterSelect = document.getElementById('email');
+            podcasters.forEach(podcast => {
+                const option = document.createElement('option');
+                option.value = podcast;
+                option.textContent = podcast;
+                podcasterSelect.appendChild(option);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            populateLabelDropdown();
+        });
+
+        async function displayPodcast() {
+            document.getElementById("album_table").innerHTML = "";
+            const albums = await getPodcasts();
+            let htmlString = `<tr>
+                                <th>LIST Podcast</th>
+                            </tr>
+                            <tr>
+                                <th>Judul</th>
+                                <th>Jumlah Episode</th>
+                                <th>Total Durasi</th>
+                                <th>ID Konten </th>
+                                <th>Action<th>
+                            </tr>`;
+
+            albums.forEach((item) => {
+                htmlString += `<tr>
+                                <td>${item.konten.judul}</td>
+                                <td>${item.episode.length}</td>
+                                <td>${item.konten.durasi}</td>
+                                <td>${item.id_konten}</td>
+                                <td>
+                                    <button class="action-button lihat-episode-modal" data-id="${item.id_konten}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Episode</button>
+                                    <button class="action-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Tambah Episode</button>
+                                    <button class="action-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Hapus Podcast</button>
+                                </td>
+                            </tr>`;
+            });
+
+            document.getElementById("album_table").innerHTML = htmlString;
+
+        }
+
+        displayPodcast()
+    </script>
+{% endblock content %}
