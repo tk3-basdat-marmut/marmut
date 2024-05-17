@@ -81,7 +81,7 @@
                         <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
                     </li>
                 </ul>
-                <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ user }}</a>
+                <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ nama }}</a>
             </div>
         </div>
     </nav>
@@ -133,11 +133,10 @@
 </div>
 
 <div class="row justify-content-center mb-3">
-    <div class="col-auto">
-        <a href="{% url 'podcast:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Podcast</a>
-        <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a>
+    <div class="col-auto">     <a href="{% url 'album_song_royalti:podcast_render' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Podcast</a>
+        <!-- <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a> -->
         <a href="{% url 'podcast:list_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Podcast</a>
-        <a href="{% url 'chart:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Chart</a>
+        <a href="{% url 'chart:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Chart</a> 
     </div>
 </div>
 
@@ -177,7 +176,7 @@ function getChart(id) {
     })
     .then(data => {
         let htmlString = `<tr>
-            <th colspan="6" style="text-align:center;">DAFTAR EPISODE</th>
+            <th colspan="6" style="text-align:center;">DAFTAR LAGU</th>
         </tr>
             <tr>
                 <th style="background-color: #15a3c7; color: white;">Judul Lagu</th>

@@ -13,5 +13,6 @@ urlpatterns = [
     path('show-play-podcast', show_play_podcast, name='show_play_podcast'),
     path('list-podcast', list_podcast, name='list_podcast'),
     path('r-podcast-detail/<str:id>/', r_podcast_detail, name='r_podcast_detail'),
-    path('r-episode/<str:id_konten_podcast>/', r_episode, name='r_episode')
+    path('r-episode/<str:id_konten_podcast>/', r_episode, name='r_episode'),
+    # path('add-episode-ajax', add_episode_ajax, name='add_episode_ajax'),
 ]

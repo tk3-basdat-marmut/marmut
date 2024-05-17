@@ -78,7 +78,7 @@
                         <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
                     </li>
                 </ul>
-                <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ user }}</a>
+                <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ nama }}</a>
             </div>
         </div>
     </nav>
@@ -106,7 +106,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
             </div>
@@ -114,17 +113,53 @@
     </div>
 </div>
 
-<div class="row justify-content-center mb-3">
-    <div class="col-auto">
-        <a href="{% url 'podcast:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Podcast</a>
-        <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a>
-        <a href="{% url 'podcast:list_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Podcast</a>
-        <a href="{% url 'chart:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Chart</a>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Episode</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_podcast" class="col-form-label">ID Podcast:</label>
+                        <input type="text" class="form-control" id="id_podcast" name="id_podcast" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="judul_episode" class="col-form-label">Judul Episode:</label>
+                        <input type="text" class="form-control" id="judul_episode" name="judul_episode"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deskripsi_episode" class="col-form-label">Deskripsi:</label>
+                        <input type="text" class="form-control" id="deskripsi_episode" name="deskripsi_episode"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="durasi_episode" class="col-form-label">Durasi:</label>
+                        <input type="number" class="form-control" id="durasi_episode" name="durasi_episode">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add_episode" data-bs-dismiss="modal">Tambah Episode</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="container" style="margin-top: 20px;">
-    <h2 style="font-weight: bold;">KELOLA PODCAST</h2>
+<div class="row justify-content-center mb-3">
+    <div class="col-auto">
+  
+        <a href="{% url 'album_song_royalti:podcast_render' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Podcast</a>
+        <!-- <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a> -->
+        <a href="{% url 'podcast:list_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Podcast</a>
+        <a href="{% url 'chart:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Chart</a>  </div>
+</div>
+
+<!-- <div class="container" style="margin-top: 20px;">
+    <h2 style="font-weight: bold;">KELOLA PODCAST</h2> -->
     <div class="row mb-3">
         <div class="col">
             <div class="table-responsive">
@@ -138,7 +173,7 @@
             </div>
         </div>
     </div>
-</div>
+<!-- </div> -->
 
 <script>
     async function getPodcasts() {
@@ -240,7 +275,7 @@ async function displayPodcast() {
 
     document.getElementById("album_table").innerHTML = htmlString;
 }
-    displayPodcast()
+    // displayPodcast()
     document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('lihat-episode-modal')) {
                 const itemId = e.target.dataset.id;
