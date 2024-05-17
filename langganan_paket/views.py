@@ -102,12 +102,26 @@ def song_detail(request, id_song):
     return render(request, "song_detail.html", {'song': song_details})
 
 
+# def d_downloaded_songs(request, id_song):
+#     if request.method == "POST":
+#         supabase = get_supabase_client()
+#         email = request.user.email
+#         supabase.table("downloaded_song").delete().match({"id_song": id_song, "email_downloader": email}).execute()
+#         return redirect('r-downloaded-songs')
+#     return HttpResponse("Method not allowed", status=405)
+
 def d_downloaded_songs(request, id_song):
     if request.method == "POST":
         supabase = get_supabase_client()
-        email = request.user.email
+        email = request.session.get('email')  # Assuming email is stored in session
+        
+        # Delete the downloaded song from the database
         supabase.table("downloaded_song").delete().match({"id_song": id_song, "email_downloader": email}).execute()
-        return redirect('r-downloaded-songs')
+        
+        # Redirect to deletion_success.html with a success message
+        message = "Lagu berhasil dihapus dari daftar unduhan."
+        return render(request, 'deletion_success.html', {'message': message})
+    
     return HttpResponse("Method not allowed", status=405)
 
 def payment(request, jenis_paket, harga):
