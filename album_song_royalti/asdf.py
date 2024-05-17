@@ -42,5 +42,21 @@ JOIN songwriter_write_song as sws on s.id_konten = sws.id_song
 JOIN songwriter as so on sws.id_songwriter = so.id
 WHERE so.id = '7ec6a544-87fb-4303-b720-255b6e2f93a6'
 """
-print(query(string2))
+
+string = f"""
+SELECT e.judul as judul_episode, e.deskripsi as deskripsi_episode, e.durasi as durasi_episode, e.tanggal_rilis as tanggal_rilis_episode, k.judul as judul_podcast
+from episode as e
+JOIN konten as k on k.id = e.id_konten_podcast
+WHERE e.id_konten_podcast = 'b432597f-9a74-44d2-820c-c0b8fe1705ac'
+"""
+
+string = f"""
+SELECT e.id_episode as id_episode, e.judul as judul_episode, e.deskripsi as deskripsi_episode, e.durasi as durasi_episode, e.tanggal_rilis as tanggal_rilis_episode
+from episode as e
+JOIN podcast as p on e.id_konten_podcast = p.id_konten 
+JOIN konten as k on p.id_konten = k.id
+WHERE e.id_konten_podcast = '{'02115406-9664-4b4c-b252-b96116498b15'}'
+"""
+selected_episode = supabase.table("episode").select("*").eq('id_episode', '7f8259e8-182f-4baf-b929-3c6a84616037').execute()
+print(selected_episode.data[0])
 

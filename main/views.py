@@ -104,18 +104,22 @@ def login_user(request):
             is_songwriter = supabase.from_('songwriter').select('*').eq('email_akun', username).execute()
             is_songwriter_data = is_songwriter.data
 
+            # Check if the user is a songwriter
+            is_podcaster = supabase.from_('podcaster').select('*').eq('email', username).execute()
+            is_podcaster_data = is_podcaster.data
+
             # Determine the role of the user
-            if not is_artist_data and not is_songwriter_data:
+            if not is_artist_data and not is_songwriter_data and not is_podcaster_data:
                 request.session['status'] = 'User'
-            elif not is_songwriter_data:
+            elif is_artist_data:
                 request.session['status'] = 'Artist'
                 request.session['id'] = is_artist_data[0]['id']
-            elif not is_artist_data:
+            elif is_songwriter_data:
                 request.session['status'] = 'Songwriter'
                 request.session['id'] = is_songwriter_data[0]['id']
-            else:
-                request.session['status'] = 'Both'
-            
+            elif is_podcaster_data:
+                request.session['status'] = 'Podcaster'
+
             response = HttpResponseRedirect(reverse("main:show_main")) 
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
