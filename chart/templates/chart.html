@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d6f3fb;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+
+    .container {
+        background: #F0FFFF;
+        /* Light cyan background */
+        padding: 20px;
+        border-radius: 5px;
+        /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Subtle box shadow */
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 15px;
+        text-align: left;
+        background-color: white;
+    }
+
+    .table-header {
+        background-color: #15a3c7;
+        color: white;
+    }
+
+    td {
+        background-color: #fff;
+    }
+
+    a {
+        color: white;
+        background-color: #15a3c7;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    a:hover {
+        background-color: #0087a8;
+    }
+</style>
+
+<div class="container" style="max-width: 95%; margin-bottom: 20px;">
+    <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #ffffff;"><strong>Marmut</strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+                    </li>
+                </ul>
+                <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ nama }}</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-weight: bold;">PODCAST DETAIL</h1> -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-bordered table-hover table-info">
+                                <thead class="table-info"> 
+                                </thead>
+                                <tbody id="test">
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-bordered table-hover table-info">
+                                <thead class="table-info"> 
+                                </thead>
+                                <tbody id="testing">
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mb-3">
+    <div class="col-auto">     <a href="{% url 'album_song_royalti:podcast_render' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Podcast</a>
+        <!-- <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Create Podcast</a> -->
+        <a href="{% url 'podcast:list_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Podcast</a>
+        <a href="{% url 'chart:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">List Chart</a> 
+    </div>
+</div>
+
+<div class="container" style="margin-top: 20px;">
+    <h2 style="font-weight: bold;">LIST CHART</h2>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-info">
+                    <thead class="table-info"> 
+                        </thead>
+                        <tbody id="album_table">
+                            <!-- Transaction data -->
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function getCharts() {
+    return fetch("{% url 'chart:r_chart' %}").then((res) => res.json())
+}   
+
+function deleteSong(id) {
+            fetch(`/chart/d-song/${id}`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    displayAlbum();
+                } else {
+                    console.error('Failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+function getChart(id) {
+    fetch(`/chart/r-chart-view/${id}`, {
+        method: 'GET',
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById("testing").innerHTML = "";
+            return response.json();
+        } else {
+            console.error('Failed.');
+        }
+    })
+    .then(data => {
+        let htmlString = `<tr>
+            <th colspan="6" style="text-align:center;">DAFTAR LAGU</th>
+        </tr>
+            <tr>
+                <th style="background-color: #15a3c7; color: white;">Judul Lagu</th>
+                <th style="background-color: #15a3c7; color: white;">Oleh</th>
+                <th style="background-color: #15a3c7; color: white;">Tanggal Rilis</th>
+                <th style="background-color: #15a3c7; color: white;">Total Plays</th>
+                <th style="background-color: #15a3c7; color: white;">Action</th>
+            </tr>`;
+
+        data.forEach((item) => {
+
+            htmlString += `
+                <tr>
+                    <td>${item.judul}</td>
+                    <td>${item.nama}</td>
+                    <td>${item.tanggal_rilis}</td>
+                    <td>${item.total_play}</td>
+                    <td><button class="btn btn-primary hapus-episode" style="background-color: #15a3c7; color:white" data-id="${item.id_song}">Hapus</button></td>
+                </tr>`;
+        });
+
+        // Update the table with the new content
+        document.getElementById("testing").innerHTML = htmlString;
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
+function getDetails(id_playlist) {
+    fetch(`/chart/r-specific-chart/${id_playlist}`, {
+        method: 'GET',
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById("test").innerHTML = "";
+            return response.json();
+        } else {
+            console.error('Failed.');
+        }
+    })
+    .then(data => {
+        let htmlString = `<tr>
+            <th colspan="6" style="text-align:center;">CHART DETAIL</th>
+        </tr>
+            <tr>
+                <th style="background-color: #15a3c7; color: white;">Tipe</th>
+            </tr>`;
+
+        data.forEach((item) => {
+            htmlString += `
+                <tr>
+                    <td>${item.tipe}</td>
+                </tr>`;
+        });
+
+        // Update the table with the new content
+        document.getElementById("test").innerHTML = htmlString;
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
+async function displayChart() {
+    document.getElementById("album_table").innerHTML = "";
+    const charts = await getCharts();
+    let htmlString = `<table class="table table-bordered table-hover table-info">
+                       
+                        <thead>
+                            <tr class="table-header">
+                                <th style="background-color: #15a3c7; color: white;">Tipe</th>
+                                <th style="background-color: #15a3c7; color: white;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+    charts.forEach((item) => {
+
+        htmlString += `<tr>
+                        <td>${item.tipe}</td>
+                        <td>
+                            <button class="btn btn-primary lihat-episode-modal" style="background-color: #15a3c7; color:white" data-id="${item.id_playlist}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Daftar Lagu</button>
+                        </td>
+                    </tr>`;
+    });
+
+    htmlString += `</tbody></table>`;
+
+    document.getElementById("album_table").innerHTML = htmlString;
+}
+
+    displayChart()
+    document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('lihat-episode-modal')) {
+                const itemId = e.target.dataset.id;
+                console.log("Item ID:", itemId);
+                getDetails(itemId);
+                getChart(itemId); // Pass the itemId to the getChart function
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('hapus-episode')) {
+                const itemId = e.target.dataset.id;
+                deleteSong(itemId); // Pass the itemId to the getEpisode function
+            }
+        });
+    
+</script>
+{% endblock content %}

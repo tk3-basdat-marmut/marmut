@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Marmut - Register</title>
+{% endblock meta %}
+
+{% block content %}  
+
+<style>
+    h1{
+        color: #000000;
+    }
+
+    p{
+        color: #000000;
+    }
+
+    body {
+        background-color: #d6f3fb;
+    }
+    
+    .card {
+        background-color: #F0FFFF;
+    }
+    
+    .fincache-register-description {
+        color: #F0FFFF;
+    }
+
+    .fincache-register-description h1 {
+        font-size: 36px;
+    }
+
+    .fincache-register-description p {
+        font-size: 20px;
+    }
+
+    .card {
+        background-color: #F0FFFF;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row">
+        <div class="col-md-3"> 
+            <div class="fincache-register-description">
+                <h1>Sign Up</h1>
+                <p>It's easy and quick.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">  
+                        {% csrf_token %}  
+                        <table>  
+                            {{ form.as_table }}  
+                            <tr>  
+                                <td></td>
+                                <td><input type="submit" name="submit" value="Daftar"/></td>  
+                            </tr>  
+                        </table>  
+                    </form>
+    
+                    {% if messages %}  
+                        <ul>   
+                            {% for message in messages %}  
+                                <li>{{ message }}</li>  
+                            {% endfor %}  
+                        </ul>   
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

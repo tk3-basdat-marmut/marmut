@@ -100,6 +100,7 @@
         <!-- <button class="btn btn-primary" id="button-album" style="background-color: #15a3c7; color:white">Kelola Podcast</button> -->
         <a href="{% url 'album_song_royalti:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Kelola Album & Song</a>
         <button class="btn btn-primary" id="button-album" style="background-color: #15a3c7; color:white">Cek Royalti</button> 
+        
         <a href="{% url 'podcast:dashboard' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Punya Naput</a>
         <!-- <a href="{% url 'podcast:c_podcast' %}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color:white">Play Song</a>  -->
     </div>
@@ -154,26 +155,5 @@
 </div>
 <h5 style="text-align: center;">Sesi terakhir login: {{ last_login }}</h5>
 
-
-    <a href="{% url 'r-list-packages' %}">
-        <button>
-            Langganan Paket
-        </button>
-    </a>
-
-    <a href="{% url 'search-content' %}">
-        <button>
-        Search Bar
-        </button>
-    </a>
-
-    <a href="{% url 'r-downloaded-songs' %}">
-        <button>
-        Downloaded Songs
-        </button>
-    </a>
-    
-
-
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
+<!-- <h5>Sesi terakhir login: {{ last_login }}</h5> -->
 {% endblock content %}
