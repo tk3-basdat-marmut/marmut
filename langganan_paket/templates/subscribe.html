@@ -76,11 +76,8 @@
                 <td>{{ package.jenis }}</td>
                 <td>{{ package.harga }}</td>
                 <td>
-                    <form method="POST" action="{% url 'c-subscribe-to-package' %}">
+                    <form method="POST" action="{% url 'payment' jenis_paket=package.jenis harga=package.harga %}">
                         {% csrf_token %}
-                        <input type="hidden" name="jenis_paket" value="{{ package.jenis }}">
-                        <input type="hidden" name="metode_bayar" value="Credit Card"> <!-- Assume a default payment method -->
-                        <input type="hidden" name="nominal" value="{{ package.harga }}">
                         <button type="submit">Berlangganan</button>
                     </form>
                 </td>
@@ -88,6 +85,9 @@
             {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'r-transaction-history' email=user_email %}">
+        <button>Riwayat Transaksi</button>
+    </a>
 </div>
 </body>
 </html>

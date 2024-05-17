@@ -109,10 +109,9 @@
             {% for song in results.songs %}
             <tr>
                 <td>Song</td>
-                <td>{{ song.title }}</td>
-                <td>{{ song.artist.name }}</td>
-                <!-- <td><button onclick="window.location.href='{% url 'song_detail' song.id %}'" class="view-btn">View</button></td> -->
-                <td><button>View</button></td>
+                <td>{{ song.judul }}</td>
+                <td>{{ song.penyanyi }}</td>
+                <!-- <td><button onclick="window.location.href='{% url 'song_detail' id_song=song.id %}'" class="view-btn">View</button></td> -->
             </tr>
             {% endfor %}
             {% for podcast in results.podcasts %}
