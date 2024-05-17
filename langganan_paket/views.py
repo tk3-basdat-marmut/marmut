@@ -88,41 +88,59 @@ def search_content(request):
         error_message = str(e)
         return render(request, 'search.html', {'message': f'An error occurred: {error_message}'})
 
+# def r_downloaded_songs(request):
+#     supabase = get_supabase_client()
+#     email = request.session.get('email')
+#     response = supabase.table("downloaded_song").select("*, song(id_konten, id_artist, konten(judul))").eq("email_downloader", email).execute()
+#     return render(request, "downloaded_songs.html", {'songs': response.data})
 
 def r_downloaded_songs(request):
     supabase = get_supabase_client()
-    email = request.session.get('email')  # Assuming email is stored in session
-    response = supabase.table("downloaded_song").select("*, song(*)").eq("email_downloader", email).execute()
+    email = request.session.get('email')
+    response = supabase.table("downloaded_song").select("*, song(id_konten, id_artist, konten(judul))").eq("email_downloader", email).execute()
     return render(request, "downloaded_songs.html", {'songs': response.data})
 
+# def song_detail(request, id_song):
+#     supabase = get_supabase_client()
+#     response = supabase.table("song").select("*").eq("id_konten", id_song).execute()
+#     song_details = response.data[0] if response.data else None
+#     return render(request, "song_detail.html", {'song': song_details})
 
 def song_detail(request, id_song):
     supabase = get_supabase_client()
-    response = supabase.table("song").select("*").eq("id_konten", id_song).execute()
-    song_details = response.data[0] if response.data else None
-    return render(request, "song_detail.html", {'song': song_details})
-
+    response = supabase.table("downloaded_song").select("*, song(id_konten, id_artist, id_album, total_play, total_download, konten(judul))").eq("id_song", id_song).execute()
+    song = response.data[0] if response.data else None
+    return render(request, "song_detail.html", {'song': song})
 
 # def d_downloaded_songs(request, id_song):
 #     if request.method == "POST":
 #         supabase = get_supabase_client()
-#         email = request.user.email
+#         email = request.session.get('email')  # Assuming email is stored in session
+        
+#         # Delete the downloaded song from the database
 #         supabase.table("downloaded_song").delete().match({"id_song": id_song, "email_downloader": email}).execute()
-#         return redirect('r-downloaded-songs')
+        
+#         # Redirect to deletion_success.html with a success message
+#         message = "Lagu berhasil dihapus dari daftar unduhan."
+#         return render(request, 'deletion_success.html', {'message': message})
+    
 #     return HttpResponse("Method not allowed", status=405)
 
 def d_downloaded_songs(request, id_song):
     if request.method == "POST":
         supabase = get_supabase_client()
-        email = request.session.get('email')  # Assuming email is stored in session
-        
+        email = request.session.get('email')
+
         # Delete the downloaded song from the database
         supabase.table("downloaded_song").delete().match({"id_song": id_song, "email_downloader": email}).execute()
-        
+
+        # Decrease the total_download value of the song
+        supabase.rpc("decrease_total_download", {"song_id": id_song}).execute()
+
         # Redirect to deletion_success.html with a success message
         message = "Lagu berhasil dihapus dari daftar unduhan."
         return render(request, 'deletion_success.html', {'message': message})
-    
+
     return HttpResponse("Method not allowed", status=405)
 
 def payment(request, jenis_paket, harga):
