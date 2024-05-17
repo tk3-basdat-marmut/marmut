@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment for Subscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6f3fb;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Full height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #F0FFFF; /* Light cyan background */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
+            width: 60%; /* Adjust width */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #15A3C7;
+            color: white;
+            text-align: left;
+        }
+        td {
+            background-color: #fff;
+            text-align: left;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #15A3C7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0087a8;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 style="text-align: center;">PEMBAYARAN PAKET</h2>
+    <table>
+        <tr>
+            <th>Jenis</th>
+            <td>{{ package.jenis }}</td>
+        </tr>
+        <tr>
+            <th>Harga</th>
+            <td>{{ package.harga }}</td>
+        </tr>
+        <tr>
+            <th>Metode Pembayaran</th>
+            <td>
+
+                <form action="{% url 'c-subscribe-to-package' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="jenis_paket" value="{{ package.jenis }}">
+                    <input type="hidden" name="nominal" value="{{ package.harga }}">
+                    <input type="hidden" name="email" value="{{ request.session.email }}">
+                    <input type="hidden" name="timestamp_dimulai" value="{% now 'Y-m-d H:i:s' %}">
+                    <input type="hidden" name="timestamp_berakhir" value="{% now 'Y-m-d H:i:s' %}">
+                    <select name="metode_bayar">
+                        <option value="bank_transfer">Transfer Bank</option>
+                        <option value="credit_card">Kartu Kredit</option>
+                        <option value="e_wallet">E-Wallet</option>
+                    </select>
+                    <button type="submit">Bayar</button>
+                </form>
+
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

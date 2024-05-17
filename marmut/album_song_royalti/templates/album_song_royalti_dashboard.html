@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container" style="max-width: 95%; margin-bottom: 20px;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: #000000;"><strong>Marmut</strong></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+                        </li>
+                    </ul>
+                    <a class="nav-link disabled" aria-disabled="true" style="color: #000000;">Welcome, {{ user }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Lagu</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered table-hover table-info">
+                                    <thead class="table-info"> 
+                                    </thead>
+                                    <tbody id="testing">
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="container" style="margin-top: 20px;">
+        <div class="row mb-3">
+            <div class="col">
+                <button class="btn btn-primary" id="button-album">Lihat Album</button>
+                <button class="btn btn-primary" id="button-song">Lihat Lagu</button>
+                <button class="btn btn-primary" id="button-royalti">Lihat Royalti</button>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-info">
+                        <thead class="table-info"> 
+                        </thead>
+                        <tbody id="album_table">
+                            <!-- Transaction data -->
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5 style="text-align: center;">Sesi terakhir login: {{ last_login }}</h5>
+
+    <script>
+
+        async function getAlbums() {
+            return fetch("{% url 'album_song_royalti:r_album' %}").then((res) => res.json())
+        }
+
+        async function getSongs() {
+            return fetch("{% url 'album_song_royalti:r_song' %}").then((res) => res.json())
+        }
+
+        async function getRoyalti() {
+            return fetch("{% url 'album_song_royalti:r_royalti' %}").then((res) => res.json())
+        }
+
+
+        function getSongs2(id) {
+            fetch(`/album_song_royalti/r-song2/${id}`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("testing").innerHTML = "";
+                    return response.json();
+                } else {
+                    console.error('Failed.');
+                }
+            })
+            .then(data => {
+                let htmlString = `
+                    <tr>
+                        <th>ID Album</th>
+                        <th>ID Artist</th>
+                        <th>ID Konten</th>
+                        <th>Total Download</th>
+                        <th>Total Play</th>
+                    </tr>`;
+
+                data.forEach((item) => {
+                    htmlString += `
+                        <tr>
+                            <td>${item.id_album}</td>
+                            <td>${item.id_artist}</td>
+                            <td>${item.id_konten}</td>
+                            <td>${item.total_download}</td>
+                            <td>${item.total_play}</td>
+                        </tr>`;
+                });
+
+                // Update the table with the new content
+                document.getElementById("testing").innerHTML = htmlString;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+
+        async function displayAlbum() {
+            document.getElementById("album_table").innerHTML = ""
+            const albums = await getAlbums()
+            let htmlString = ``
+            htmlString += `\n<tr>
+                                <th>ID</th>
+                                <th>Judul</th>
+                                <th>Jumlah Lagu</th>
+                                <th>ID Label</th>
+                                <th>Total Durasi</th>
+                                <th>Action</th>
+                            </tr>`;
+            albums.forEach((item) => {
+                htmlString += `\n<tr>
+                <td>${item.id}</td>
+                <td>${item.judul}</td>
+                <td>${item.jumlah_lagu}</td>
+                <td>${item.id_label}</td>
+                <td>${item.total_durasi}</td>
+                <td>
+                    <button class="action-button lihat-lagu-modal" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Lagu</button>
+                    <button class="action-button">Tambah Lagu</button>
+                    <button class="action-button">Hapus Lagu</button>
+                </td>
+            </tr>`;
+            })
+            document.getElementById("album_table").innerHTML = htmlString
+        }
+
+        async function displayLagu() {
+            document.getElementById("album_table").innerHTML = ""
+            const albums = await getSongs()
+            let htmlString = ``
+            htmlString += `\n<tr>
+                                <th>ID Album</th>
+                                <th>ID Artist</th>
+                                <th>ID Konten</th>
+                                <th>Total Download</th>
+                                <th>Total Play</th>
+                                <th>Action</th>
+                            </tr>`;
+            albums.forEach((item) => {
+                htmlString += `\n<tr>
+                <td>${item.id_album}</td>
+                <td>${item.id_artist}</td>
+                <td>${item.id_konten}</td>
+                <td>${item.total_download}</td>
+                <td>${item.total_play}</td>
+                <td>
+                    <button class="action-button">Lihat Lagu</button>
+                    <button class="action-button">Tambah Lagu</button>
+                    <button class="action-button">Hapus Lagu</button>
+                </td>
+            </tr>`;
+            })
+            document.getElementById("album_table").innerHTML = htmlString
+        }
+
+        async function displayRoyalti() {
+            document.getElementById("album_table").innerHTML = ""
+            const albums = await getRoyalti()
+            let htmlString = ``
+            htmlString += `\n<tr>
+                                <th>ID Pemilik Hak Cipta</th>
+                                <th>ID Song</th>
+                                <th>Jumlah</th>
+                            </tr>`;
+            albums.forEach((item) => {
+                htmlString += `\n<tr>
+                <td>${item.id_pemilik_hak_cipta}</td>
+                <td>${item.id_song}</td>
+                <td>${item.jumlah}</td>
+                </tr>`;
+            })
+            document.getElementById("album_table").innerHTML = htmlString
+        }
+
+        function lihatDaftarLagu(albumId) {
+        }
+
+        function tambahLagu(albumId) {
+            // Implement functionality to add a song to the given album ID
+        }
+
+        function hapus(albumId) {
+            // Implement functionality to delete the album with the given ID
+        }
+
+        displayAlbum()
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('lihat-lagu-modal')) {
+                const itemId = e.target.dataset.id;
+                console.log("Item ID:", itemId);
+                getSongs2(itemId); // Pass the itemId to the getSongs2 function
+            }
+        });
+
+        const buttonSong = document.getElementById('button-song');
+        const buttonRoyalti = document.getElementById('button-royalti');
+        const buttonAlbum = document.getElementById('button-album');
+
+        buttonSong.addEventListener('click', displayLagu);
+        buttonRoyalti.addEventListener('click', displayRoyalti);
+        buttonAlbum.addEventListener('click', displayAlbum);
+
+    </script>
+{% endblock content %}

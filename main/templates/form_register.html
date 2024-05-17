@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulir Pendaftaran Pengguna - Marmut</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d6f3fb;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    input, select {
+        width: 100%;
+        padding: 8px;
+        margin: 6px 0;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        background-color: #15A3C7;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0087a8;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Formulir Pendaftaran Pengguna</h2>
+    <form>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <input type="text" placeholder="Nama">
+        <select>
+            <option>Laki-laki</option>
+            <option>Perempuan</option>
+        </select>
+        <input type="text" placeholder="Tempat lahir">
+        <input type="date" placeholder="Tanggal lahir">
+        <input type="text" placeholder="Kota asal">
+        <div>
+        <label><input type="checkbox" name="role" value="Podcaster"> Podcaster</label>
+        <label><input type="checkbox" name="role" value="Artist"> Artist</label>
+        <label><input type="checkbox" name="role" value="Songwriter"> Songwriter</label>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    
+</div>
+</body>
+</html>

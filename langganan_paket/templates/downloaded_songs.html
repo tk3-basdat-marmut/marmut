@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Downloaded Songs</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d6f3fb;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    .container {
+        background: #F0FFFF;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #15A3C7;
+        color: white;
+    }
+    td {
+        background-color: #fff;
+    }
+    button {
+        background-color: #15A3C7;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #0087a8;
+    }
+</style>
+</head>
+<body>
+
+    <div class="container" style="max-width: 95%; margin-bottom: 20px;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+        <div class="container-fluid">
+        <a class="navbar-brand" style="color: #15A3C7;"><strong>Marmut</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+        </li>
+        </ul>
+        <div class="navbar-nav ml-auto">
+        <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ user }}</a>
+        </div>
+        </div>
+        </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h2>DAFTAR UNDUH LAGU</h2>
+
+        <!-- <table>
+            <tr>
+                <th>Judul</th>
+                <th>Oleh</th>
+                <th>Tanggal Download</th>
+                <th>Actions</th>
+            </tr>
+        
+            {% for song in songs %}
+            <tr>
+                <td>{{ song.song.konten.judul }}</td>
+                <td>{{ song.song.id_artist }}</td>
+                <td>{{ song.timestamp }}</td>
+                <td>
+                    <button onclick="location.href='{% url 'song_detail' id_song=song.id_song %}'">View</button>
+                    <form action="{% url 'd-downloaded-songs' id_song=song.id_song %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No downloaded songs yet.</td>
+            </tr>
+            {% endfor %}
+        </table> -->
+
+        <table>
+            <tr>
+                <th>Judul</th>
+                <th>Oleh</th>
+                <th>Tanggal Download</th>
+                <th>Actions</th>
+            </tr>
+        
+            {% for song in songs %}
+            <tr>
+                <td>{{ song.song.konten.judul }}</td>
+                <td>{{ song.song.id_artist }}</td>
+                <td>{{ song.timestamp_download }}</td>
+                <td>
+                    <button onclick="location.href='{% url 'song_detail' id_song=song.id_song %}'">View</button>
+                    <form action="{% url 'd-downloaded-songs' id_song=song.id_song %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No downloaded songs yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+
+
+        <button onclick="goBack()">Back</button>
+    </div>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
