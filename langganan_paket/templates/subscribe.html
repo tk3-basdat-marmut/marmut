@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription Packages</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,34 +61,64 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <h2>LANGGANAN PAKET</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Jenis</th>
-                <th>Harga</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for package in packages %}
-            <tr>
-                <td>{{ package.jenis }}</td>
-                <td>{{ package.harga }}</td>
-                <td>
-                    <form method="POST" action="{% url 'payment' jenis_paket=package.jenis harga=package.harga %}">
-                        {% csrf_token %}
-                        <button type="submit">Berlangganan</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="{% url 'r-transaction-history' email=user_email %}">
-        <button>Riwayat Transaksi</button>
-    </a>
-</div>
+
+    <div class="container" style="max-width: 95%; margin-bottom: 20px;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+        <div class="container-fluid">
+        <a class="navbar-brand" style="color: #15A3C7;"><strong>Marmut</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+        </li>
+        </ul>
+        <div class="navbar-nav ml-auto">
+        <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ user }}</a>
+        </div>
+        </div>
+        </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">LANGGANAN PAKET</h2>
+            <a href="{% url 'r-transaction-history' email=user_email %}">
+                <button>Riwayat Transaksi</button>
+            </a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Jenis</th>
+                    <th>Harga</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for package in packages %}
+                <tr>
+                    <td>{{ package.jenis }}</td>
+                    <td>{{ package.harga }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'payment' jenis_paket=package.jenis harga=package.harga %}">
+                            {% csrf_token %}
+                            <button type="submit">Berlangganan</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

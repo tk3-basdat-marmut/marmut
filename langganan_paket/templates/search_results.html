@@ -111,7 +111,7 @@
                 <td>Song</td>
                 <td>{{ song.judul }}</td>
                 <td>{{ song.penyanyi }}</td>
-                <!-- <td><button onclick="window.location.href='{% url 'song_detail' id_song=song.id %}'" class="view-btn">View</button></td> -->
+                <td><button onclick="window.location.href='{% url 'song_detail' id_song=song.id %}'" class="view-btn">View</button></td>
             </tr>
             {% endfor %}
             {% for podcast in results.podcasts %}
@@ -119,7 +119,7 @@
                 <td>Podcast</td>
                 <td>{{ podcast.title }}</td>
                 <td>{{ podcast.podcaster.name }}</td>
-                <!-- <td><button onclick="window.location.href='{% url 'podcast_detail' podcast.id %}'" class="view-btn">View</button></td> -->
+                <td><button onclick="window.location.href='{% url 'podcast_detail' podcast.id %}'" class="view-btn">View</button></td>
                 <td><button>View</button></td>
             </tr>
             {% endfor %}
@@ -128,7 +128,7 @@
                 <td>User Playlist</td>
                 <td>{{ user_playlist.title }}</td>
                 <td>{{ user_playlist.creator.name }}</td>
-                <!-- <td><button onclick="window.location.href='{% url 'playlist_detail' user_playlist.id %}'" class="view-btn">View</button></td> -->
+                <td><button onclick="window.location.href='{% url 'playlist_detail' user_playlist.id %}'" class="view-btn">View</button></td>
                 <td><button>View</button></td>
             </tr>
             {% endfor %}
