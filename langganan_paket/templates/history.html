@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6f3fb;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background: #F0FFFF; /* Light cyan background */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle box shadow */
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 10px; /* Added margin-bottom to create space between table and button */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #15A3C7;
+            color: white;
+        }
+        td {
+            background-color: #fff;
+        }
+        button {
+            color: white;
+            background-color: #15A3C7;
+            padding: 10px 20px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0087a8;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>RIWAYAT TRANSAKSI PAKET</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Jenis</th>
+                <th>Tanggal Dimulai</th>
+                <th>Tanggal Berakhir</th>
+                <th>Metode Pembayaran</th>
+                <th>Nominal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.jenis_paket }}</td>
+                <td>{{ transaction.timestamp_dimulai|date:"d M Y H:i" }}</td>
+                <td>{{ transaction.timestamp_berakhir|date:"d M Y H:i" }}</td>
+                <td>{{ transaction.metode_bayar }}</td>
+                <td>{{ transaction.nominal }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No transactions found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button onclick="window.history.back();">Kembali</button>
+</div>
+</body>
+</html>

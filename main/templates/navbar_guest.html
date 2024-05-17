@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navbar Guest</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d6f3fb;
+        margin: 0;
+        padding: 20px;
+    }
+    .navbar {
+        background-color: #ffffff;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+        list-style-type: none;
+        margin: 0;
+    }
+    .navbar a {
+        color: white;
+        background-color: #15A3C7;
+        padding: 10px 15px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        text-decoration: none;  /* Removes underline */
+        margin-left: 10px;  /* Spacing between buttons */
+    }
+    .navbar a:hover {
+        background-color: #0087a8;
+    }
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/login">Login</a>
+        <a href="/register">Registrasi</a>
+    </nav>
+</body>
+</html>
