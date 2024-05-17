@@ -154,5 +154,26 @@
 </div>
 <h5 style="text-align: center;">Sesi terakhir login: {{ last_login }}</h5>
 
-<!-- <h5>Sesi terakhir login: {{ last_login }}</h5> -->
+
+    <a href="{% url 'r-list-packages' %}">
+        <button>
+            Langganan Paket
+        </button>
+    </a>
+
+    <a href="{% url 'search-content' %}">
+        <button>
+        Search Bar
+        </button>
+    </a>
+
+    <a href="{% url 'r-downloaded-songs' %}">
+        <button>
+        Downloaded Songs
+        </button>
+    </a>
+    
+
+
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

@@ -162,6 +162,22 @@
     return fetch("{% url 'chart:r_chart' %}").then((res) => res.json())
 }   
 
+function deleteSong(id) {
+            fetch(`/chart/d-song/${id}`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    displayAlbum();
+                } else {
+                    console.error('Failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
 function getChart(id) {
     fetch(`/chart/r-chart-view/${id}`, {
         method: 'GET',
@@ -194,7 +210,7 @@ function getChart(id) {
                     <td>${item.nama}</td>
                     <td>${item.tanggal_rilis}</td>
                     <td>${item.total_play}</td>
-                    <td><button class="btn btn-primary" style="background-color: #15a3c7; color:white" ">Hapus</button></td>
+                    <td><button class="btn btn-primary hapus-episode" style="background-color: #15a3c7; color:white" data-id="${item.id_song}">Hapus</button></td>
                 </tr>`;
         });
 
@@ -276,6 +292,13 @@ async function displayChart() {
                 console.log("Item ID:", itemId);
                 getDetails(itemId);
                 getChart(itemId); // Pass the itemId to the getChart function
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('hapus-episode')) {
+                const itemId = e.target.dataset.id;
+                deleteSong(itemId); // Pass the itemId to the getEpisode function
             }
         });
     

@@ -1,75 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #d6f3fb;
-        margin: 0;
-        padding: 20px;
-        color: #333;
-    }
-
-    .container {
-        background: #F0FFFF;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    h2 {
-        text-align: center;
-        color: #333;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th,
-    td {
-        border: 1px solid #ddd;
-        padding: 15px;
-        text-align: left;
-        background-color: white;
-    }
-
-    .table-header {
-        background-color: #15a3c7;
-        color: white;
-    }
-
-    td {
-        background-color: #fff;
-    }
-
-    a {
-        color: white;
-        background-color: #15a3c7;
-        padding: 8px 16px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
-
-    a:hover {
-        background-color: #0087a8;
-    }
-</style>
-
 
     <div class="container" style="max-width: 95%; margin-bottom: 20px;">
         <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: #fff;"><strong>Marmut</strong></a>
+                <a class="navbar-brand" style="color: #000000;"><strong>Marmut</strong></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -94,7 +30,7 @@
                             <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
                         </li>
                     </ul>
-                    <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ nama }}</a>
+                    <a class="nav-link disabled" aria-disabled="true" style="color: #000000;">Welcome, {{ nama }}</a>
                 </div>
             </div>
         </nav>
@@ -104,7 +40,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-weight: bold;">Daftar Episode</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Lagu</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -230,19 +166,11 @@
         </div>
     </div>
     
-    <div class="row justify-content-center mb-3">
-        <div class="col-auto">
-    <button class="btn btn-primary" id="button-tambah-podcast" data-bs-toggle="modal" data-bs-target="#exampleModalTambahPodcast" style="background-color: #15a3c7; color:white">Tambah Podcast</button>
-</div>
-</div>
-
 
     <div class="container" style="margin-top: 20px;">
-        
-    <h2 style="font-weight: bold;">LIST PODCAST</h2>
         <div class="row mb-3">
             <div class="col">
-                <!-- <button class="btn btn-primary" id="button-tambah-podcast" data-bs-toggle="modal" data-bs-target="#exampleModalTambahPodcast">Tambah Podcast</button> -->
+                <button class="btn btn-primary" id="button-tambah-podcast" data-bs-toggle="modal" data-bs-target="#exampleModalTambahPodcast">Tambah Podcast</button>
             </div>
         </div>
         <div class="row mb-3">
@@ -384,11 +312,11 @@
             .then(data => {
                 let htmlString = `
                     <tr>
-                        <th style="background-color: #15a3c7; color: white;">Judul</th>
-                        <th style="background-color: #15a3c7; color: white;">Deskripsi</th>
-                        <th style="background-color: #15a3c7; color: white;">Durasi</th>
-                        <th style="background-color: #15a3c7; color: white;">Tanggal</th>
-                        <th style="background-color: #15a3c7; color: white;">Action</th>
+                        <th>Judul</th>
+                        <th>Deskripsi</th>
+                        <th>Durasi</th>
+                        <th>Tanggal</th>
+                        <th>Action</th>
                     </tr>`;
 
                 data.forEach((item) => {
@@ -398,7 +326,7 @@
                             <td>${item.deskripsi_episode}</td>
                             <td>${item.durasi_episode}</td>
                             <td>${item.tanggal_rilis_episode}</td>
-                            <td><button class="btn btn-primary hapus-episode" data-id="${item.id_episode}" style="background-color: #15a3c7; color:white">Hapus</button></td>
+                            <td><button class="action-button hapus-episode" data-id="${item.id_episode}">Hapus</button></td>
                         </tr>`;
                 });
 
@@ -501,12 +429,14 @@
         async function displayPodcast() {
             document.getElementById("podcast_table").innerHTML = "";
             const podcasts = await getPodcasts();
-            let htmlString = `
+            let htmlString = `<tr>
+                                <th colspan="6" style="text-align:center;">LIST PODCAST</th>
+                            </tr>
                             <tr>
-                                <th style="background-color: #15a3c7; color: white;">Judul</th>
-                                <th style="background-color: #15a3c7; color: white;">Jumlah Episode</th>
-                                <th style="background-color: #15a3c7; color: white;">Total Durasi</th>
-                                <th style="background-color: #15a3c7; color: white;">Action</th>
+                                <th>Judul</th>
+                                <th>Jumlah Episode</th>
+                                <th>Total Durasi</th>
+                                <th>Action</th>
                             </tr>`;
 
             podcasts.forEach((item) => {
@@ -515,9 +445,9 @@
                                 <td>${item.jumlah_episode}</td>
                                 <td>${item.total_durasi}</td>
                                 <td>
-                                    <button class="btn btn-primary lihat-episode-modal" data-id="${item.id_konten}" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #15a3c7; color:white">Lihat Episode</button>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-id="${item.id_konten}" data-bs-target="#exampleModal2" style="background-color: #15a3c7; color:white">Tambah Episode</button>
-                                    <button class="btn btn-primary hapus-podcast" data-bs-toggle="modal" data-id="${item.id_konten}" style="background-color: #15a3c7; color:white">Hapus Podcast</button>
+                                    <button class="action-button lihat-episode-modal" data-id="${item.id_konten}" data-bs-toggle="modal" data-bs-target="#exampleModal">Lihat Episode</button>
+                                    <button class="action-button" data-bs-toggle="modal" data-id="${item.id_konten}" data-bs-target="#exampleModal2">Tambah Episode</button>
+                                    <button class="action-button hapus-podcast" data-bs-toggle="modal" data-id="${item.id_konten}">Hapus Podcast</button>
                                 </td>
                             </tr>`;
             });

@@ -37,7 +37,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "main",
+    'main',
+    'langganan_paket',
     'album_song_royalti',
     'podcast',
     'chart',

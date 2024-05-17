@@ -166,15 +166,15 @@ def d_song(request, id_konten):
         album = supabase.table('album').select('*').eq('id', song.data[0]['id_album']).execute()
 
         response = supabase.table('konten').delete().eq('id', id_konten).execute()
-        jumlah_sekarang = album.data[0]['jumlah_lagu'] - 1
-        durasi_sekarang = album.data[0]['total_durasi'] - int(konten.data[0]['durasi'])
-        string = f"UPDATE album SET jumlah_lagu = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id = '{album.data[0]['id']}';"
-        hasil = query(string)
+        #jumlah_sekarang = album.data[0]['jumlah_lagu'] - 1
+        #durasi_sekarang = album.data[0]['total_durasi'] - int(konten.data[0]['durasi'])
+        #string = f"UPDATE album SET jumlah_lagu = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id = '{album.data[0]['id']}';"
+        #hasil = query(string)
         
         return HttpResponse(b"CREATED", status=201)
     
 
-def d_episode(request, id_episode): ## JANGAN KERJAIN DULU PLIS (01:53 AM)
+def d_episode(request, id_episode):
     if request.method == 'GET':   
         url = os.environ.get("SUPABASE_URL")
         key = os.environ.get("SUPABASE_KEY")
@@ -183,10 +183,10 @@ def d_episode(request, id_episode): ## JANGAN KERJAIN DULU PLIS (01:53 AM)
         selected_episode = supabase.table("episode").select("*").eq('id_episode', id_episode).execute()
         selected_podcast = supabase.table("podcast_detail").select("*").eq('id_konten', selected_episode.data[0]['id_konten_podcast']).execute()
         response = supabase.table('episode').delete().eq('id_episode', id_episode).execute()
-        jumlah_sekarang = selected_podcast.data[0]['jumlah_episode'] - 1
-        durasi_sekarang = selected_podcast.data[0]['total_durasi'] - int(selected_episode.data[0]['durasi'])
-        string = f"UPDATE podcast_detail SET jumlah_episode = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id_konten = '{selected_podcast.data[0]['id_konten']}';"
-        hasil = query(string)
+        #jumlah_sekarang = selected_podcast.data[0]['jumlah_episode'] - 1
+        #durasi_sekarang = selected_podcast.data[0]['total_durasi'] - int(selected_episode.data[0]['durasi'])
+        #string = f"UPDATE podcast_detail SET jumlah_episode = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id_konten = '{selected_podcast.data[0]['id_konten']}';"
+        #hasil = query(string)
         return HttpResponse(b"CREATED", status=201)
     
     return HttpResponseNotFound()
@@ -620,10 +620,10 @@ def add_song_ajax(request):
         }).execute()
 
         selected_album = supabase.table("album").select("*").eq('id', id_album).execute()
-        jumlah_sekarang = selected_album.data[0]['jumlah_lagu'] + 1
-        durasi_sekarang = selected_album.data[0]['total_durasi'] + int(durasi_album)
-        string = f"UPDATE album SET jumlah_lagu = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id = '{id_album}';"
-        hasil = query(string)
+        #jumlah_sekarang = selected_album.data[0]['jumlah_lagu'] + 1
+        #durasi_sekarang = selected_album.data[0]['total_durasi'] + int(durasi_album)
+        #string = f"UPDATE album SET jumlah_lagu = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id = '{id_album}';"
+        #hasil = query(string)
 
         return HttpResponse(b"CREATED", status=201)
 
@@ -654,10 +654,10 @@ def add_episode_ajax(request):
         }).execute()
 
         selected_podcast = supabase.table("podcast_detail").select("*").eq('id_konten', id_podcast).execute()
-        jumlah_episode = selected_podcast.data[0]['jumlah_episode'] + 1
-        total_durasi = selected_podcast.data[0]['total_durasi'] + int(durasi_episode)
-        string = f"UPDATE podcast_detail SET jumlah_episode = {jumlah_episode}, total_durasi = {total_durasi} WHERE id_konten = '{id_podcast}';"
-        hasil = query(string)
+        #jumlah_episode = selected_podcast.data[0]['jumlah_episode'] + 1
+        #total_durasi = selected_podcast.data[0]['total_durasi'] + int(durasi_episode)
+        #string = f"UPDATE podcast_detail SET jumlah_episode = {jumlah_episode}, total_durasi = {total_durasi} WHERE id_konten = '{id_podcast}';"
+        #hasil = query(string)
 
         return HttpResponse(b"CREATED", status=201)
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Platform Navbar</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d6f3fb;
+    }
+    .navbar {
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        list-style-type: none;
+    }
+    .navbar li {
+        margin: 0 10px;
+    }
+    .search-bar input {
+        padding: 5px;
+        border-radius: 4px;
+        border: none;
+    }
+    a {
+        color: white;
+        background-color: #15A3C7;
+        padding: 10px 15px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        text-decoration: none;  /* Removes underline */
+    }
+    a:hover {
+        background-color: #0087a8;
+    }
+</style>
+</head>
+<body>
+    <nav id="navbar" class="navbar">
+        <!-- Navbar content will be loaded here based on user state -->
+    </nav>
+
+    <script>
+        // Sample user data simulation
+        const user = {
+            isLoggedIn: true,
+            type: 'Artist', // Types: 'Regular', 'Premium', 'Artist', 'Songwriter', 'Podcaster', 'Label'
+        };
+
+        function loadNavbar() {
+            const navbar = document.getElementById('navbar');
+            let items = [];
+
+            if (!user.isLoggedIn) {
+                items = ['<li><a href="/login">Login</a></li>', '<li><a href="/register">Registrasi</a></li>'];
+            } else {
+                items = ['<li><a href="/dashboard">Dashboard</a></li>'];
+
+                if (['Regular', 'Artist', 'Songwriter', 'Podcaster'].includes(user.type)) {
+                    items.push('<li><a href="/charts">Chart</a></li>');
+                    items.push('<li class="search-bar"><input type="text" placeholder="Search..."></li>');
+                    items.push('<li><a href="/manage-playlists">Kelola Playlist</a></li>');
+                    items.push('<li><a href="/subscriptions">Langganan Paket</a></li>');
+                }
+
+                if (user.type === 'Premium') {
+                    items.push('<li><a href="/manage-downloads">Kelola Downloaded Songs</a></li>');
+                }
+
+                if (user.type === 'Podcaster') {
+                    items.push('<li><a href="/manage-podcasts">Kelola Podcast</a></li>');
+                }
+
+                if (['Artist', 'Songwriter'].includes(user.type)) {
+                    items.push('<li><a href="/manage-albums-songs">Kelola Album & Songs</a></li>');
+                }
+
+                if (user.type === 'Label') {
+                    items.push('<li><a href="/manage-albums">Kelola Album</a></li>');
+                }
+
+                if (['Artist', 'Songwriter', 'Label'].includes(user.type)) {
+                    items.push('<li><a href="/check-royalties">Cek Royalti</a></li>');
+                }
+
+                items.push('<li><a href="/logout">Logout</a></li>');
+            }
+
+            navbar.innerHTML = items.join('');
+        }
+
+        // Load the navbar based on the user's state
+        loadNavbar();
+    </script>
+</body>
+</html>
