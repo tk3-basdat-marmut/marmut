@@ -23,7 +23,8 @@ def r_list_packages(request):
     context = {
         'packages': packages,
         'user_email': request.session.get('email'),  # Menambahkan email pengguna dari sesi
-        'is_premium': request.session.get('is_premium')  # Misal status premium/non-premium
+        'is_premium': request.session.get('is_premium'),  # Misal status premium/non-premium
+        'user': request.user.username,
     }
     return render(request, 'subscribe.html', context)
 

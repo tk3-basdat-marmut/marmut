@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,35 +58,58 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <h2>RIWAYAT TRANSAKSI PAKET</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Jenis</th>
-                <th>Tanggal Dimulai</th>
-                <th>Tanggal Berakhir</th>
-                <th>Metode Pembayaran</th>
-                <th>Nominal</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-            <tr>
-                <td>{{ transaction.jenis_paket }}</td>
-                <td>{{ transaction.timestamp_dimulai|date:"d M Y H:i" }}</td>
-                <td>{{ transaction.timestamp_berakhir|date:"d M Y H:i" }}</td>
-                <td>{{ transaction.metode_bayar }}</td>
-                <td>{{ transaction.nominal }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5">No transactions found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <button onclick="window.history.back();">Kembali</button>
-</div>
+
+    <div class="container" style="max-width: 95%; margin-bottom: 20px;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+        <div class="container-fluid">
+        <a class="navbar-brand" style="color: #15A3C7;"><strong>Marmut</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+        </li>
+        </ul>
+        <div class="navbar-nav ml-auto">
+        <a class="nav-link disabled" aria-disabled="true" style="color: #000000; font-weight: bold;">Welcome, {{ user }}</a>
+        </div>
+        </div>
+        </div>
+        </nav>
+    </div>
+
+
+    <div class="container">
+        <h2>RIWAYAT TRANSAKSI PAKET</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Jenis</th>
+                    <th>Tanggal Dimulai</th>
+                    <th>Tanggal Berakhir</th>
+                    <th>Metode Pembayaran</th>
+                    <th>Nominal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.jenis_paket }}</td>
+                    <td>{{ transaction.timestamp_dimulai|date:"d M Y H:i" }}</td>
+                    <td>{{ transaction.timestamp_berakhir|date:"d M Y H:i" }}</td>
+                    <td>{{ transaction.metode_bayar }}</td>
+                    <td>{{ transaction.nominal }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No transactions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button onclick="window.history.back();">Kembali</button>
+    </div>
 </body>
 </html>
