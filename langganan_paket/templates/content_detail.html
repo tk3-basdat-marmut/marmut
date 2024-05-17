@@ -1,0 +1,15 @@
+<!-- song_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Song Detail</title>
+</head>
+<body>
+    <h1>{{ song.song.konten.judul }}</h1>
+    <p>Artist: {{ song.song.id_artist }}</p>
+    <p>Album: {{ song.song.id_album }}</p>
+    <p>Total Play: {{ song.song.total_play }}</p>
+    <p>Total Download: {{ song.song.total_download }}</p>
+    <a href="{% url 'r-downloaded-songs' %}">Back to Downloaded Songs</a>
+</body>
+</html>
