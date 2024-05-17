@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container" style="max-width: 95%; margin-bottom: 20px;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color: #000000;"><strong>Marmut</strong></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'album_song_royalti:dashboard' %}" style="color: #000000;">Lihat Album</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'album_song_royalti:royalti_render' %}" style="color: #000000;">Lihat Royalti</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000;">Logout</a>
+                        </li>
+                    </ul>
+                    <a class="nav-link disabled" aria-disabled="true" style="color: #000000;">Welcome, {{ nama }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container" style="margin-top: 20px;">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-info">
+                        <thead class="table-info"> 
+                        </thead>
+                        <tbody id="album_table">
+                            <!-- Transaction data -->
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function getRoyalti() {
+            return fetch("{% url 'album_song_royalti:r_royalti' %}").then((res) => res.json())
+        }
+
+        async function displayRoyalti() {
+            document.getElementById("album_table").innerHTML = "";
+            const albums = await getRoyalti();
+            let htmlString = `
+                <tr>
+                    <th colspan="4" style="text-align:center;">LIST ROYALTI</th>
+                </tr>
+                <tr>
+                    <th>Judul Lagu</th>
+                    <th>Judul Album</th>
+                    <th>Total Play</th>
+                    <th>Total Download</th>
+                    <th>Total Royalti Didapat</th>
+                </tr>`;
+            albums.forEach((item) => {
+                const judulLagu = item.judul_lagu
+                const judulAlbum = item.judul_album
+                const totalPlay = item.total_play
+                const totalDownload = item.total_download
+                const totalRoyalti = item.total_royalti
+
+                htmlString += `
+                    <tr>
+                        <td>${judulLagu}</td>
+                        <td>${judulAlbum}</td>
+                        <td>${totalPlay}</td>
+                        <td>${totalDownload}</td>
+                        <td>${totalRoyalti}</td>
+                    </tr>`;
+            });
+            document.getElementById("album_table").innerHTML = htmlString;
+        }
+
+        displayRoyalti()
+    </script>
+{% endblock content %}
