@@ -107,12 +107,12 @@
 
 <div class="container" style="margin-top: 20px">
   <h2 style="font-weight: bold">USER PLAYLIST DETAIL</h2>
-  <p><strong>Judul:</strong>Playlist 1</p>
-  <p><strong>Pembuat:</strong> Pembuat 1</p>
-  <p><strong>Jumlah Lagu:</strong> 12</p>
-  <p><strong>Total Durasi:</strong> 8 jam 20 menit</p>
-  <p><strong>Tanggal Dibuat:</strong> 18/03/24</p>
-  <p><strong>Deskripsi:</strong> lorem ipsum</p>
+  <p><strong>Judul:</strong>{{user_playlist_detail_info.0.0}}</p>
+  <p><strong>Pembuat:</strong>{{user_playlist_detail_info.0.1}}</p>
+  <p><strong>Jumlah Lagu:</strong> {{user_playlist_detail_info.0.2}}</p>
+  <p><strong>Total Durasi:</strong> {{user_playlist_detail_info.0.3}}</p>
+  <p><strong>Tanggal Dibuat:</strong> {{user_playlist_detail_info.0.4}}</p>
+  <p><strong>Deskripsi:</strong> {{user_playlist_detail_info.0.5}}</p>
   <div class="row justify-content-center mb-3">
     <div class="col-auto" style="display: flex; flex-direction: column">
       <a
@@ -140,68 +140,42 @@
             <th style="background-color: #15a3c7; color: white">Judul Lagu</th>
             <th style="background-color: #15a3c7; color: white">Oleh</th>
             <th style="background-color: #15a3c7; color: white">Durasi</th>
+
             <th style="background-color: #15a3c7; color: white">Actions</th>
           </tr>
-          <tr>
-            <td style="background-color: white">Song1</td>
-            <td style="background-color: white">Artist1</td>
-            <td style="background-color: white">2 menit</td>
-            <td>
-              <div style="display: flex; flex-direction: column">
-                <a
-                  href=""
-                  class="btn btn-primary"
-                  id="button-song"
-                  style="background-color: #15a3c7; color: white"
-                  >Lihat</a
-                >
-                <a
-                  href=""
-                  class="btn btn-primary"
-                  id="button-song"
-                  style="background-color: #15a3c7; color: white"
-                  >Play</a
-                >
-                <a
-                  href=""
-                  class="btn btn-primary"
-                  id="button-song"
-                  style="background-color: #15a3c7; color: white"
-                  >Hapus</a
-                >
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td style="background-color: white">Song2</td>
-            <td style="background-color: white">Artist2</td>
-            <td style="background-color: white">3 menit</td>
-            <td>
-              <div style="display: flex; flex-direction: column">
-                <a
-                  href=""
-                  class="btn btn-primary"
-                  id="button-song"
-                  style="background-color: #15a3c7; color: white"
-                  >Lihat</a
-                >
-                <a
-                  href=""
-                  class="btn btn-primary"
-                  id="button-song"
-                  style="background-color: #15a3c7; color: white"
-                  >Play</a
-                >
-                <a
-                  href=""
-                  class="btn btn-primary"
-                  id="button-song"
-                  style="background-color: #15a3c7; color: white"
-                  >Hapus</a
-                >
-              </div>
-            </td>
-          </tr>
+          {% for song in user_playlist_detail_song %}
+        <tr>
+          <td style="background-color: white">{{ song.0 }}</td>
+          <td style="background-color: white">{{ song.1 }}</td>
+          <td style="background-color: white">{{ song.2 }} menit</td>
+
+          <td>
+            <div style="display: flex; flex-direction: column">
+              <a
+                href="/playlist/see-detail-song/{{song.3}}"
+                class="btn btn-primary"
+                id="button-song"
+                style="background-color: #15a3c7; color: white"
+                >Lihat</a
+              >
+              <a
+                href=""
+                class="btn btn-primary"
+                id="button-song"
+                style="background-color: #15a3c7; color: white"
+                >Play</a
+              >
+              <a
+                href=""
+                class="btn btn-primary"
+                id="button-song"
+                style="background-color: #15a3c7; color: white"
+                >Hapus</a
+              >
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
           <tr>
             <td colspan="4">
               <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000; background-color: #d6f3fb;">Tambah Lagu</a>

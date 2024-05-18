@@ -109,22 +109,19 @@
   <div class="row mb-3">
     <div class="col">
       <div class="table-responsive">
-        <table class="table table-bordered table-hover table-info">
-          <tr>
-            <th colspan="54" style="text-align: center;">USER PLAYLIST</th>
-          </tr>
-            <tr class="table-header">
-            <th style="background-color: #15a3c7; color: white">Judul</th>
-            <th style="background-color: #15a3c7; color: white">Jumlah Lagu</th>
-            <th style="background-color: #15a3c7; color: white">Total Durasi</th>
-            <th style="background-color: #15a3c7; color: white">Actions</th>
-          </tr>
-          <tr>
-            <td colspan="4" style="text-align: center;">Anda Belum Memiliki Playlist</td>
-          </tr>
+        <table
+          class="table table-bordered table-hover table-info"
+          id="playlist_table"
+        >
+          <tr></tr>
           <tr>
             <td colspan="4">
-              <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000; background-color: #d6f3fb;">Tambah Playlist</a>
+              <a
+                class="nav-link"
+                href="{% url 'main:logout' %}"
+                style="color: #000000; background-color: #d6f3fb"
+                >Tambah Playlist</a
+              >
             </td>
           </tr>
         </table>
@@ -133,4 +130,61 @@
   </div>
 </div>
 <h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
+<script>
+  async function get_user_playlists() {
+    return fetch("{% url 'playlist:r_user_playlist' %}").then((res) =>
+      res.json()
+    );
+  }
+
+  async function display_user_playlist() {
+    document.getElementById("playlist_table").innerHTML = "";
+    const user_playlists = await get_user_playlists();
+    let htmlString = `<tr>
+    <th colspan="54" style="text-align: center">USER PLAYLIST</th>
+  </tr>
+  <tr class="table-header">
+    <th style="background-color: #15a3c7; color: white">Judul</th>
+    <th style="background-color: #15a3c7; color: white">Jumlah Lagu</th>
+    <th style="background-color: #15a3c7; color: white">Total Durasi</th>
+    <th style="background-color: #15a3c7; color: white">Id Playlist</th>
+    <th style="background-color: #15a3c7; color: white">Actions</th>
+  </tr>`;
+
+    if (user_playlists.length === 0) {
+      htmlString += `<tr><td colspan="5" style="text-align: center;">Anda Belum Memiliki Playlist</td></tr>
+      <tr>
+            <td colspan="5">
+              <a class="nav-link" href="" style="color: #000000; background-color: #d6f3fb;">Tambah Playlist</a>
+            </td>
+          </tr>
+      `;
+    } else {
+      user_playlists.forEach((item) => {
+        htmlString += `<tr>
+        <td>${item.judul}</td>
+        <td>${item.jumlah_lagu}</td>
+        <td>${item.total_durasi}</td>
+        <td>${item.id_playlist}</td>
+        <td>
+          <div style="display: flex; flex-direction: column">
+            <a href="/playlist/manage-detail-playlist/${item.id_playlist}" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color: white">Detail</a>
+            <a href="" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color: white">Ubah</a>
+            <a href="" class="btn btn-primary" id="button-song" style="background-color: #15a3c7; color: white">Hapus</a>
+          </div>
+        </td>
+      </tr>
+      <tr>
+            <td colspan="5">
+              <a class="nav-link" href="" style="color: #000000; background-color: #d6f3fb;">Tambah Playlist</a>
+            </td>
+          </tr>
+      `;
+      });
+    }
+
+    document.getElementById("playlist_table").innerHTML = htmlString;
+  }
+  display_user_playlist();
+</script>
 {% endblock content %}

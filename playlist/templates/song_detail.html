@@ -219,23 +219,22 @@
       <div class="table-responsive">
         <div style="background-color: #d6f3fb; padding: 5px">
           <h5 style="text-align: center">SONG DETAIL</h5>
-          <p><strong>Judul: </strong>Wheels on the Bus</p>
+          <p><strong>Judul: </strong>{{ detail_song.0.0 }}</p>
           <p><strong>Genre(s):</strong></p>
           <ul>
-            <li>Nursery Rhymes</li>
-            <li>Education</li>
+            <li>{{ detail_song.0.1 }}</li>
           </ul>
-          <p><strong>Artist: </strong>CoComelon</p>
+          <p><strong>Artist: </strong>{{ detail_song.0.2 }}</p>
           <p><strong>Songwrite(s):</strong></p>
           <ul>
-            <li>Verna Hill</li>
+            <li>{{ detail_song.0.9 }}</li>
           </ul>
-          <p><strong>Durasi: </strong>3 menit</p>
-          <p><strong>Tanggal Rilis: </strong>24/05/18</p>
-          <p><strong> Tahun: </strong>2024</p>
-          <p><strong>Total Play: </strong>157671523</p>
-          <p><strong>Total Downloads: </strong>0</p>
-          <p><strong>Album: </strong>CoComelon Kids Hits, Vol.1</p>
+          <p><strong>Durasi: </strong>{{ detail_song.0.3 }} menit</p>
+          <p><strong>Tanggal Rilis: </strong>{{ detail_song.0.4 }}</p>
+          <p><strong> Tahun: </strong>{{ detail_song.0.5 }}</p>
+          <p><strong>Total Play: </strong>{{ detail_song.0.6 }}</p>
+          <p><strong>Total Downloads: </strong>{{ detail_song.0.7 }}</p>
+          <p><strong>Album: </strong>{{ detail_song.0.8 }}</p>
           <div
             style="display: flex; flex-direction: row; justify-content: center"
           >
