@@ -122,13 +122,8 @@
         style="background-color: #15a3c7; color: white"
         >Shuffle Play</a
       >
-      <a
-        href=""
-        class="btn btn-primary"
-        id="button-song"
-        style="background-color: #15a3c7; color: white"
-        >Kembali</a
-      >
+      <button onclick="window.history.back()">Kembali</button>
+
     </div>
   </div>
   <h2 style="font-weight: bold">DAFTAR LAGU</h2>
@@ -144,41 +139,43 @@
             <th style="background-color: #15a3c7; color: white">Actions</th>
           </tr>
           {% for song in user_playlist_detail_song %}
-        <tr>
-          <td style="background-color: white">{{ song.0 }}</td>
-          <td style="background-color: white">{{ song.1 }}</td>
-          <td style="background-color: white">{{ song.2 }} menit</td>
+          <tr>
+            <td style="background-color: white">{{ song.0 }}</td>
+            <td style="background-color: white">{{ song.1 }}</td>
+            <td style="background-color: white">{{ song.2 }} menit</td>
 
-          <td>
-            <div style="display: flex; flex-direction: column">
-              <a
-                href="/playlist/see-detail-song/{{song.3}}"
-                class="btn btn-primary"
-                id="button-song"
-                style="background-color: #15a3c7; color: white"
-                >Lihat</a
-              >
-              <a
-                href=""
-                class="btn btn-primary"
-                id="button-song"
-                style="background-color: #15a3c7; color: white"
-                >Play</a
-              >
-              <a
-                href=""
-                class="btn btn-primary"
-                id="button-song"
-                style="background-color: #15a3c7; color: white"
-                >Hapus</a
-              >
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
+            <td>
+              <div style="display: flex; flex-direction: column">
+                <a
+                  href="/playlist/see-detail-song/{{song.3}}"
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  >Lihat</a
+                >
+                <button id="buttonPlaySong" data-song-id="{{song.3}}">
+                  Play
+                </button>
+                <a
+                  href="#"
+                  class="btn btn-primary"
+                  id="button-song"
+                  style="background-color: #15a3c7; color: white"
+                  onclick="deleteSongFromPlaylist('{{ song.3 }}', '{{ id_playlist }}')"
+                  >Hapus</a
+                >
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
           <tr>
             <td colspan="4">
-              <a class="nav-link" href="{% url 'main:logout' %}" style="color: #000000; background-color: #d6f3fb;">Tambah Lagu</a>
+              <a
+                class="nav-link"
+                href="/playlist/manage-add-playlist/{{id_playlist}}/"
+                style="color: #000000; background-color: #d6f3fb"
+                >Tambah Lagu</a
+              >
             </td>
           </tr>
         </table>
@@ -187,4 +184,97 @@
   </div>
 </div>
 <h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
+
+<script>
+  function deleteSongFromPlaylist(id_song, id_playlist) {
+    var formData = new FormData();
+    formData.append("id_song", id_song);
+    formData.append("id_playlist", id_playlist);
+
+    fetch("/playlist/delete-song-from-playlist", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to delete song from playlist");
+        }
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log("Song deleted from playlist successfully");
+          // You can add any additional functionality here, such as updating the UI
+          // For example, you can remove the deleted song row from the table
+          location.reload(); // Reload the page to reflect the changes
+        } else {
+          console.error("Failed to delete song from playlist");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  function playSong(id_song) {
+    var formData = new FormData();
+    formData.append("id_song", id_song);
+
+    fetch("/playlist/play-song", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to play song");
+        }
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log("Song played successfully");
+          // You can add any additional functionality here, such as updating the UI
+        } else {
+          console.error("Failed to play song");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  function shufflePlay() {
+    var songIds = Array.from(document.querySelectorAll("#buttonPlaySong")).map(
+      (button) => button.getAttribute("data-song-id")
+    );
+    if (songIds.length > 0) {
+      var randomIndex = Math.floor(Math.random() * songIds.length);
+      var randomSongId = songIds[randomIndex];
+      playSong(randomSongId);
+    } else {
+      console.error("No songs found in the playlist.");
+    }
+  }
+
+  // Get all "Play" button elements
+  var playButtons = document.querySelectorAll("#buttonPlaySong");
+
+  // Attach the click event listener to each "Play" button
+  playButtons.forEach(function (button) {
+    button.onclick = function () {
+      var songId = this.getAttribute("data-song-id");
+      playSong(songId);
+    };
+  });
+
+  // Get the "Shuffle Play" button element
+  var shufflePlayButton = document.querySelector(
+    'a[href=""][id="button-song"]'
+  );
+
+  // Attach the click event listener to the "Shuffle Play" button
+  shufflePlayButton.onclick = function (event) {
+    event.preventDefault(); // Prevent the default link behavior
+    shufflePlay();
+  };
+</script>
+
 {% endblock content %}

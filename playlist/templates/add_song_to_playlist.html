@@ -195,16 +195,14 @@
       <div class="table-responsive">
         <div style="background-color: #d6f3fb; padding: 5px">
           <h5 style="text-align: center">ADD SONG TO USER PLAYLIST</h5>
-          <p><strong>Judul: </strong>Wheels on the Bus</p>
-          <p><strong>Artist: </strong>CoComelon</p>
+          <p><strong>Judul: </strong>{{judul}}</p>
+          <p><strong>Artist: </strong>{{artist_nama}}</p>
           <div
             style="display: flex; flex-direction: row; justify-content: center"
           >
             <label for="playlist">Playlist: </label>
-            <select id="playlists" name="playlist">
-              <option value="">Playlist 1</option>
-              <option value="">Playlist 2</option>
-              <option value="">Playlist 3</option>
+            <select id="select-my-playlist" name="select-my-playlist">
+
             </select>
           </div>
           <div
@@ -215,7 +213,7 @@
               margin-right: 60px;
             "
           >
-            <button id="myBtn" style="text-align: center">TAMBAH</button>
+            <button id="button_add_song" style="text-align: center">TAMBAH</button>
             <button style="text-align: center">KEMBALI</button>
           </div>
         </div>
@@ -224,50 +222,125 @@
   </div>
 </div>
 <h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
+<!-- Modal untuk pesan konfirmasi -->
+<div id="playlistModal" class="modal">
   <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h1>Berhasil!</h1>
-    </div>
-    <div class="modal-body">
-      <p>Berhasil menambahkan Lagu dengan judul The Wheels on the Bus ke Playlist1</p>
-      <div style="display: flex; flex-direction: column;">
-        <button>Playlist1</button>
-        <button>Kembali</button>
-      </div>
+    <span class="close">&times;</span>
+    <h2>Konfirmasi Penambahan Lagu</h2>
+    <p id="playlistMessage"></p>
+    <div style="display: flex; justify-content: center">
+      <a
+        href="#"
+        id="goToPlaylistBtn"
+        class="btn btn-primary"
+        style="margin-right: 10px"
+        >Ke Playlist</a
+      >
+      <button id="backBtn" class="btn btn-secondary">Kembali</button>
     </div>
   </div>
 </div>
 
 <script>
-  // Get the modal
-  var modal = document.getElementById("myModal");
-  
-  // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
-  
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-  
-  // When the user clicks the button, open the modal 
-  btn.onclick = function() {
-    modal.style.display = "block";
-  }
-  
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-  
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+async function fetchMyPlaylist() {
+    try {
+      const response = await fetch("{% url 'playlist:fetch_my_playlist' %}");
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Failed to fetch playlists");
+      }
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
     }
   }
+
+  async function populatePlaylistDropdown() {
+    const myPlaylists = await fetchMyPlaylist();
+
+    const myPlaylistSelect = document.getElementById("select-my-playlist");
+
+    myPlaylists.forEach((myPlaylist) => {
+      const option = document.createElement("option");
+      option.value = `${myPlaylist.id_playlist}`;
+      option.textContent = `${myPlaylist.judul}`;
+      myPlaylistSelect.appendChild(option);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", (event) => {
+    populatePlaylistDropdown();
+  });
+
+  function addSong() {
+    // Retrieve values of input fields
+    var id_playlist = document.getElementById("select-my-playlist").value;
+    // How to get the id_playlist?
+    var id_song = '{{ id_song }}';
+    var selectElement = document.getElementById("select-my-playlist");
+    var playlist_judul = selectElement.options[selectElement.selectedIndex].text;
+    var song_judul =`{{judul}}`; 
+
+
+    // Create a FormData object and append the input values
+    var formData = new FormData();
+    formData.append("id_song", id_song);
+    formData.append("id_playlist", id_playlist);
+
+    // Send a POST request with the FormData to your backend
+    fetch("{% url 'playlist:add_song_to_playlist' %}", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+        showPlaylistModal(
+            `Berhasil menambahkan Lagu dengan judul '${song_judul}' ke '${playlist_judul}'!`,
+            id_playlist
+          );
+          return response.json();
+        } else {
+          showPlaylistModal(
+              `Lagu dengan judul '${song_judul}' sudah ditambahkan di '${playlist_judul}'!`,
+              id_playlist
+            );
+          throw new Error("Failed to add song");
+        }
+      })
+      .then((data) => {
+        if (data.success) {
+          if (data.isAlreadyAdded) {
+            showPlaylistModal(
+              `Lagu dengan judul '${song_judul}' sudah ditambahkan di '${playlist_judul}'!`,
+              id_playlist
+            );
+          } else {
+            showPlaylistModal(
+              `Berhasil menambahkan Lagu dengan judul '${song_judul}' ke '${playlist_judul}'!`,
+              id_playlist
+            );
+          }
+        } else {
+          // Menampilkan modal jika gagal menambahkan lagu, termasuk jika lagu sudah ada
+          showPlaylistModal(
+            `Lagu dengan judul '${song_judul}' sudah ditambahkan di '${playlist_judul}'!`,
+            id_playlist
+          );
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  document.getElementById("button_add_song").onclick = addSong;
+
+    // Fungsi untuk menampilkan modal pop-up
+    function showPlaylistModal(message, playlistId) {
+    playlistMessage.textContent = message;
+    goToPlaylistBtn.href =
+      "/playlist/manage-detail-playlist/" + playlistId + "/";
+
+    playlistModal.style.display = "block";
+  }
+
   </script>
 {% endblock content %}

@@ -247,10 +247,17 @@
                 class="slider"
                 id="myRange"
               />
-              <button>Play</button>
-              <button>Add to Playlist</button>
+              <button id="buttonPlaySong" data-song-id="{{ detail_song.0.10 }}">
+                Play
+              </button>
+              
+              <a
+                href="/playlist/song/add/{{detail_song.0.10}}/"
+                class="btn btn-primary"
+                >Add to Playlist</a
+              >
               <button id="myBtn">Download</button>
-              <button>Kembali</button>
+              <button  onclick="window.history.back()">Kembali</button>
             </div>
           </div>
         </div>
@@ -268,41 +275,53 @@
       <h1>Berhasil!</h1>
     </div>
     <div class="modal-body">
-      <p>
-        Berhasil mengunduh Lagu dengan judul The Wheels on the Bus
-      </p>
+      <p>Berhasil mengunduh Lagu dengan judul The Wheels on the Bus</p>
       <div style="display: flex; flex-direction: column">
         <button>Daftar Download</button>
-        <button>Kembali</button>
+        <button onclick="window.history.back()">Kembali</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Get the modal
-  var modal = document.getElementById("myModal");
+  function playSong(id_song) {
+    var formData = new FormData();
+    formData.append("id_song", id_song);
 
-  // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
+    fetch("/playlist/play-song", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to play song");
+        }
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log("Song played successfully");
+          // You can add any additional functionality here, such as updating the UI
+        } else {
+          console.error("Failed to play song");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
+  // Get the "Play" button element
+  var playButton = document.getElementById("buttonPlaySong");
 
-  // When the user clicks the button, open the modal
-  btn.onclick = function () {
-    modal.style.display = "block";
-  };
+  // Get the song ID from the data-song-id attribute
+  var songId = playButton.getAttribute("data-song-id");
 
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
-    modal.style.display = "none";
-  };
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+  // Attach the click event listener to the "Play" button
+  playButton.onclick = function () {
+    var slider = document.getElementById("myRange");
+    if (slider.value > 70) {
+      playSong(songId);
     }
   };
 </script>

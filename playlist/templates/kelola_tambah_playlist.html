@@ -109,16 +109,21 @@
   <div class="row mb-3">
     <div class="col">
       <div class="table-responsive">
-        <div style="background-color: #d6f3fb; padding: 5px;">
-          <h5 style="text-align: center;">TAMBAH LAGU</h5>
+        <div style="background-color: #d6f3fb; padding: 5px">
+          <h5 style="text-align: center">TAMBAH LAGU</h5>
           <label for="songs">Lagu: </label>
-          <select id="songs" name="cars">
-            <option value="">Wheels on the Bus - CoComelon</option>
-            <option value="">Rain Rain Go Away - CoComelon</option>
-            <option value="">Baa Baa Black Sheep - CoComelon</option>
-          </select>
-          <div style="margin: 5px; display: flex; flex-direction: row; justify-content: center;">
-            <button>SUBMIT</button>
+          <select id="select-songs" name="select-songs"></select>
+          <div
+            style="
+              margin: 5px;
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+            "
+          >
+            <button id="button_add_song" onclick="addSong('{{ id_playlist }}')">
+              SUBMIT
+            </button>
           </div>
         </div>
       </div>
@@ -126,4 +131,139 @@
   </div>
 </div>
 <h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
+
+<!-- Modal untuk pesan konfirmasi -->
+<div id="playlistModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Konfirmasi Penambahan Lagu</h2>
+    <p id="playlistMessage"></p>
+    <div style="display: flex; justify-content: center">
+      <a
+        href="#"
+        id="goToPlaylistBtn"
+        class="btn btn-primary"
+        style="margin-right: 10px"
+        >Ke Playlist</a
+      >
+      <button id="backBtn" class="btn btn-secondary">Kembali</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function fetchSongs() {
+    try {
+      const response = await fetch("{% url 'playlist:fetch_song' %}");
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Failed to fetch labels");
+      }
+    } catch (error) {
+      console.error("Error fetching labels:", error);
+    }
+  }
+
+  async function populateSongDropdown() {
+    const songs = await fetchSongs();
+
+    const songSelect = document.getElementById("select-songs");
+
+    songs.forEach((song) => {
+      const option = document.createElement("option");
+      option.value = `${song.id_konten}`;
+      option.textContent = `${song.judul} - ${song.nama_artis}`;
+      songSelect.appendChild(option);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", (event) => {
+    populateSongDropdown();
+  });
+
+  function addSong(id_playlist) {
+    var id_song = document.getElementById("select-songs").value;
+    var formData = new FormData();
+    formData.append("id_song", id_song);
+    formData.append("id_playlist", id_playlist);
+
+    var judul = `{{playlist_judul}}`;
+    fetch("{% url 'playlist:add_song_to_playlist' %}", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        const selectedSong = document.querySelector(`option[value="${id_song}"]`).textContent;
+        if (response.ok) {
+        showPlaylistModal(
+            `Berhasil menambahkan Lagu dengan judul '${selectedSong}' ke '${judul}'!`,
+            id_playlist
+          );
+          return response.json();
+        } else {
+          showPlaylistModal(
+              `Lagu dengan judul '${selectedSong}' sudah ditambahkan di '${judul}'!`,
+              id_playlist
+            );
+          throw new Error("Failed to add song");
+        }
+      })
+      .then((data) => {
+        if (data.success) {
+          if (data.isAlreadyAdded) {
+            showPlaylistModal(
+              `Lagu dengan judul '${id_song}' sudah ditambahkan di '${id_playlist}'!`,
+              id_playlist
+            );
+          } else {
+            showPlaylistModal(
+              `Berhasil menambahkan Lagu dengan judul '${id_song}' ke '${id_playlist}'!`,
+              id_playlist
+            );
+          }
+        } else {
+          // Menampilkan modal jika gagal menambahkan lagu, termasuk jika lagu sudah ada
+          showPlaylistModal(
+            `Lagu dengan judul '${data.songTitle}' sudah ditambahkan di '${data.playlistTitle}'!`,
+            id_playlist
+          );
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  // Mendapatkan elemen-elemen HTML untuk modal pop-up
+  var playlistModal = document.getElementById("playlistModal");
+  var playlistMessage = document.getElementById("playlistMessage");
+  var goToPlaylistBtn = document.getElementById("goToPlaylistBtn");
+  var backBtn = document.getElementById("backBtn");
+  var closeModal = document.getElementsByClassName("close")[0];
+
+  // Fungsi untuk menampilkan modal pop-up
+  function showPlaylistModal(message, playlistId) {
+    playlistMessage.textContent = message;
+    goToPlaylistBtn.href =
+      "/playlist/manage-detail-playlist/" + playlistId + "/";
+
+    playlistModal.style.display = "block";
+  }
+
+  // Ketika tombol "Kembali" diklik pada modal pop-up
+  backBtn.onclick = function () {
+    playlistModal.style.display = "none";
+  };
+
+  // Ketika tombol close (x) diklik pada modal pop-up
+  closeModal.onclick = function () {
+    playlistModal.style.display = "none";
+  };
+
+  // Ketika area di luar modal pop-up diklik
+  window.onclick = function (event) {
+    if (event.target == playlistModal) {
+      playlistModal.style.display = "none";
+    }
+  };
+</script>
 {% endblock content %}
