@@ -1,0 +1,328 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+  }
+
+  /* Modal Content */
+  .modal-content {
+    position: fixed;
+    bottom: 0;
+    background-color: #fefefe;
+    width: 100%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s;
+  }
+
+  /* The Close Button */
+  .close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .modal-header {
+    padding: 2px 16px;
+    background-color: #15a3c7;
+    color: white;
+  }
+
+  .modal-body {
+    padding: 2px 16px;
+  }
+
+  .modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+  }
+
+  /* Add Animation */
+  @-webkit-keyframes slideIn {
+    from {
+      bottom: -300px;
+      opacity: 0;
+    }
+    to {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      bottom: -300px;
+      opacity: 0;
+    }
+    to {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
+  @-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<style>
+  ul {
+    list-style: none;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #d6f3fb;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+
+  .container {
+    background: #f0ffff;
+    /* Light cyan background */
+    padding: 20px;
+    border-radius: 5px;
+    /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle box shadow */
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    background-color: white;
+  }
+
+  .table-header {
+    background-color: #15a3c7;
+    color: white;
+  }
+
+  td {
+    background-color: #fff;
+  }
+
+  a {
+    color: white;
+    background-color: #15a3c7;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  a:hover {
+    background-color: #0087a8;
+  }
+</style>
+
+<div class="container" style="max-width: 95%; margin-bottom: 20px">
+  <nav
+    class="navbar navbar-expand-lg"
+    style="background-color: #d6f3fb; border-radius: 20px"
+  >
+    <div class="container-fluid" style="display: flex; flex-direction: row">
+      <div style="display: flex; flex-direction: row; justify-content: start">
+        <a class="navbar-brand" style="color: #ffffff"
+          ><strong>Marmut</strong></a
+        >
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{% url 'main:logout' %}"
+                style="color: #000000; background-color: #d6f3fb"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: row; justify-content: right">
+        <a
+          class="nav-link disabled"
+          aria-disabled="true"
+          style="color: #000000; font-weight: bold; background-color: #d6f3fb"
+          >Welcome, {{ user }}</a
+        >
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="container" style="margin-top: 20px">
+  <div class="row mb-3">
+    <div class="col">
+      <div class="table-responsive">
+        <div style="background-color: #d6f3fb; padding: 5px">
+          <h5 style="text-align: center">SONG DETAIL</h5>
+          <p><strong>Judul: </strong>{{ detail_song.0.0 }}</p>
+          <p><strong>Genre(s):</strong></p>
+          <ul>
+            <li>{{ detail_song.0.1 }}</li>
+          </ul>
+          <p><strong>Artist: </strong>{{ detail_song.0.2 }}</p>
+          <p><strong>Songwrite(s):</strong></p>
+          <ul>
+            <li>{{ detail_song.0.9 }}</li>
+          </ul>
+          <p><strong>Durasi: </strong>{{ detail_song.0.3 }} menit</p>
+          <p><strong>Tanggal Rilis: </strong>{{ detail_song.0.4 }}</p>
+          <p><strong> Tahun: </strong>{{ detail_song.0.5 }}</p>
+          <p><strong>Total Play: </strong>{{ detail_song.0.6 }}</p>
+          <p><strong>Total Downloads: </strong>{{ detail_song.0.7 }}</p>
+          <p><strong>Album: </strong>{{ detail_song.0.8 }}</p>
+          <div
+            style="display: flex; flex-direction: row; justify-content: center"
+          >
+            <div style="display: flex; flex-direction: column">
+              <input
+                type="range"
+                min="1"
+                max="100"
+                value="50"
+                class="slider"
+                id="myRange"
+              />
+              <button id="buttonPlaySong" data-song-id="{{ detail_song.0.10 }}">
+                Play
+              </button>
+              
+              <a
+                href="/playlist/song/add/{{detail_song.0.10}}/"
+                class="btn btn-primary"
+                >Add to Playlist</a
+              >
+              <button id="myBtn">Download</button>
+              <button  onclick="window.history.back()">Kembali</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<h5 style="text-align: center">Sesi terakhir login: {{ last_login }}</h5>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h1>Berhasil!</h1>
+    </div>
+    <div class="modal-body">
+      <p>Berhasil mengunduh Lagu dengan judul The Wheels on the Bus</p>
+      <div style="display: flex; flex-direction: column">
+        <button>Daftar Download</button>
+        <button onclick="window.history.back()">Kembali</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function playSong(id_song) {
+    var formData = new FormData();
+    formData.append("id_song", id_song);
+
+    fetch("/playlist/play-song", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to play song");
+        }
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log("Song played successfully");
+          // You can add any additional functionality here, such as updating the UI
+        } else {
+          console.error("Failed to play song");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  // Get the "Play" button element
+  var playButton = document.getElementById("buttonPlaySong");
+
+  // Get the song ID from the data-song-id attribute
+  var songId = playButton.getAttribute("data-song-id");
+
+  // Attach the click event listener to the "Play" button
+  playButton.onclick = function () {
+    var slider = document.getElementById("myRange");
+    if (slider.value > 70) {
+      playSong(songId);
+    }
+  };
+</script>
+{% endblock content %}
