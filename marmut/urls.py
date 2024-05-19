@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('album_song_royalti/', include('album_song_royalti.urls')),
     path('langganan_paket/', include('langganan_paket.urls')),
+    path('playlist/', include('playlist.urls')),
     path('admin/', admin.site.urls),
     path('podcast/', include('podcast.urls')),
     path('chart/', include('chart.urls'))
