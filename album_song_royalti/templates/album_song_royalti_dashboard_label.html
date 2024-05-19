@@ -5,7 +5,7 @@
     <div class="container" style="max-width: 95%; margin-bottom: 20px;">
         <nav class="navbar navbar-expand-lg" style="background-color: #d6f3fb; border-radius: 20px;">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: #000000;"><strong>Marmut</strong></a>
+                <a class="navbar-brand" style="color: #000000;"><strong>Awikwok</strong></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -309,7 +309,7 @@
                             <td>${item.total_download}</td>
                             <td>${item.total_play}</td>
                             <td>${item.email_songwriter}</td>
-                            <td><button class="action-button">Hapus</button></td>
+                            <td><button class="action-button hapus-konten" data-id="${item.id_konten}">Hapus</button></td>
                         </tr>`;
                 });
 
@@ -423,10 +423,32 @@
         }
 
 
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('hapus-konten')) {
+                const itemId = e.target.dataset.id;
+                deleteSong(itemId); // Pass the itemId to the getSongs2 function
+            }
+        });
 
-        async function displayPodcast() {
+        function deleteSong(id) {
+            fetch(`/album_song_royalti/d-song/${id}`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (response.ok) {
+                    displayAlbum();
+                } else {
+                    console.error('Failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+        async function displayAlbum() {
             document.getElementById("album_table").innerHTML = "";
-            const podcast = await getPodcasts();
+            const albums = await getAlbums();
             let htmlString = `<tr>
                                 <th colspan="6" style="text-align:center;">LIST ALBUM</th>
                             </tr>
@@ -438,7 +460,7 @@
                                 <th>Action</th>
                             </tr>`;
 
-            podcast.forEach((item) => {
+            albums.forEach((item) => {
                 htmlString += `<tr>
                                 <td>${item.judul_album}</td>
                                 <td>${item.label_album}</td>
@@ -471,7 +493,7 @@
             });
         }
 
-        displayPodcast()
+        displayAlbum()
         document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('lihat-lagu-modal')) {
                 const itemId = e.target.dataset.id;
@@ -491,7 +513,7 @@
         document.getElementById("button_content_add").onclick = addContent
         document.getElementById("button_album_add").onclick = addAlbum
 
-        buttonAlbum.addEventListener('click', displayPodcast);
+        buttonAlbum.addEventListener('click', displayAlbum);
 
     </script>
 {% endblock content %}
