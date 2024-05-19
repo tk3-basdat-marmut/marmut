@@ -159,13 +159,8 @@ def d_song(request, id_konten):
         key = os.environ.get("SUPABASE_KEY")
         supabase = create_client(url, key)
         
-        # Delete the record with the specified id_album and let cascading delete handle associated records
-        song = supabase.table('song').select('*').eq('id_konten', id_konten).execute()
-        konten = supabase.table('konten').select('*').eq('id', id_konten).execute()
 
-        album = supabase.table('album').select('*').eq('id', song.data[0]['id_album']).execute()
-
-        response = supabase.table('konten').delete().eq('id', id_konten).execute()
+        response = supabase.table('song').delete().eq('id_konten', id_konten).execute()
         #jumlah_sekarang = album.data[0]['jumlah_lagu'] - 1
         #durasi_sekarang = album.data[0]['total_durasi'] - int(konten.data[0]['durasi'])
         #string = f"UPDATE album SET jumlah_lagu = {jumlah_sekarang}, total_durasi = {durasi_sekarang} WHERE id = '{album.data[0]['id']}';"
@@ -221,7 +216,7 @@ def r_song2(request, id_album):
         return JsonResponse(hasil, safe=False)
     elif request.session.get('status') == 'Artist':
         string = f"""
-        SELECT a.judul as judul_album, sw.email_akun as email_songwriter, k.judul as judul_lagu, s.total_download, s.total_play, ar.email_akun as email_artist
+        SELECT a.judul as judul_album, sw.email_akun as email_songwriter, k.judul as judul_lagu, s.total_download, s.total_play, ar.email_akun as email_artist, a.id as id_album, ar.id as id_artist, k.id as id_konten
         FROM album AS a
         JOIN song AS s ON a.id = s.id_album
         JOIN songwriter_write_song AS sws ON s.id_konten = sws.id_song
@@ -235,7 +230,7 @@ def r_song2(request, id_album):
         return JsonResponse(hasil, safe=False)   
     elif request.session.get('status') == 'Label':
         string = f"""
-        SELECT a.judul as judul_album, sw.email_akun as email_songwriter, k.judul as judul_lagu, s.total_download, s.total_play, ar.email_akun as email_artist
+        SELECT a.judul as judul_album, sw.email_akun as email_songwriter, k.judul as judul_lagu, s.total_download, s.total_play, ar.email_akun as email_artist, a.id as id_album, ar.id as id_artist, k.id as id_konten
         FROM album AS a
         JOIN song AS s ON a.id = s.id_album
         JOIN songwriter_write_song AS sws ON s.id_konten = sws.id_song
@@ -491,7 +486,7 @@ def add_album_ajax(request):
         data = supabase.table("album").insert({
             "id": uuid_album,
             "judul": judul_album,
-            "jumlah_lagu": 1,
+            "jumlah_lagu": 0,
             "id_label": id_label,
             "total_durasi": durasi_album,
         }).execute()
